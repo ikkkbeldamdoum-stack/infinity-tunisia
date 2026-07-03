@@ -327,7 +327,7 @@ import { ref, computed } from 'vue'
    pour GitHub). On pointe maintenant vers une vidéo qui existe réellement
    dans src/assets/video/. Remplace le nom du fichier ci-dessous si tu veux
    utiliser video3.mp4, video4.mp4 ou video5.mp4 à la place. ═══ */
-import heroVideo from '../assets/video/video2.mp4'
+import heroVideo from '../assets/hero-video.mp4'
 
 /* ═══ Hero badges ═══ */
 const heroBadges = [
