@@ -1,0 +1,184 @@
+/* =========================================================
+   INFINITY — Design tokens
+   Palette dérivée du logo : or chaud, encre, vert profond.
+   ========================================================= */
+:root {
+  /* Couleurs */
+  --ink: #1c1b19;
+  --ink-soft: #3a372f;
+  --gold: #f2a30d;
+  --gold-deep: #d68d06;
+  --gold-pale: #fde8bd;
+  --pine: #16332b;
+  --pine-soft: #234a3e;
+  --paper: #faf7f2;
+  --sand: #efe7d8;
+  --grey: #6e6a63;
+  --line: rgba(28, 27, 25, 0.12);
+  --white: #ffffff;
+
+  /* Typo */
+  --font-display: "Archivo", "Helvetica Neue", sans-serif;
+  --font-body: "Work Sans", "Helvetica Neue", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  /* Échelle */
+  --radius: 18px;
+  --radius-sm: 10px;
+  --container: 1180px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+  margin: 0;
+  color: var(--ink);
+}
+
+p {
+  margin: 0;
+  color: var(--ink-soft);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button {
+  font-family: var(--font-body);
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+:focus-visible {
+  outline: 3px solid var(--pine);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.wrap {
+  width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 28px;
+}
+
+/* Eyebrow / étiquette de chantier, façon clap de tournage */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--pine);
+}
+
+.eyebrow::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 0 3px var(--gold-pale);
+}
+
+/* Boutons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 14px 26px;
+  border-radius: 999px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.btn-primary {
+  background: var(--ink);
+  color: var(--paper);
+}
+.btn-primary:hover {
+  background: var(--pine);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px -8px rgba(22, 51, 43, 0.45);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--ink);
+  border: 1.5px solid var(--line);
+}
+.btn-ghost:hover {
+  border-color: var(--ink);
+  transform: translateY(-2px);
+}
+
+.btn-gold {
+  background: var(--gold);
+  color: var(--ink);
+}
+.btn-gold:hover {
+  background: var(--gold-deep);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px -8px rgba(214, 141, 6, 0.55);
+}
+
+section {
+  padding: 100px 0;
+}
+
+@media (max-width: 720px) {
+  section {
+    padding: 64px 0;
+  }
+  .wrap {
+    padding: 0 20px;
+  }
+}
