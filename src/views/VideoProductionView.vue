@@ -206,8 +206,16 @@
         </div>
 
         <div class="portfolio-grid">
-          <div class="portfolio-card" v-for="item in filteredPortfolio" :key="item.title">
-            <div class="portfolio-thumb" :style="{ background: item.color }">
+          <div
+            class="portfolio-card"
+            v-for="item in filteredPortfolio"
+            :key="item.title"
+            @click="openVideo(item)"
+          >
+            <div
+              class="portfolio-thumb"
+              :style="thumbStyle(item)"
+            >
               <span class="portfolio-duration">{{ item.duration }}</span>
               <span class="portfolio-play">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
@@ -223,6 +231,37 @@
         </div>
       </div>
     </section>
+
+    <!-- ═══════════════ MODAL LECTEUR VIDÉO ═══════════════ -->
+    <Teleport to="body">
+      <div v-if="activeVideo" class="video-modal" @click.self="closeVideo">
+        <div class="video-modal-inner">
+          <button class="video-modal-close" @click="closeVideo" aria-label="إغلاق">✕</button>
+
+          <!-- Vidéo hébergée directement (mp4/webm sur CDN) -->
+          <video
+            v-if="activeVideo.videoType === 'file'"
+            :src="activeVideo.videoUrl"
+            controls
+            autoplay
+            playsinline
+            class="video-modal-player"
+          ></video>
+
+          <!-- Vidéo YouTube / Vimeo embed -->
+          <iframe
+            v-else-if="activeVideo.videoType === 'embed'"
+            :src="activeVideo.videoUrl"
+            class="video-modal-player"
+            frameborder="0"
+            allow="autoplay; fullscreen; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+
+          <h4 class="video-modal-title">{{ activeVideo.title }}</h4>
+        </div>
+      </div>
+    </Teleport>
 
     <!-- ═══════════════ لماذا تختار Infinity ═══════════════ -->
     <section class="section why-section">
@@ -323,10 +362,6 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-/* ═══ FIX : "../assets/hero-video.mp4" a été supprimé du dépôt (trop volumineux
-   pour GitHub). On pointe maintenant vers une vidéo qui existe réellement
-   dans src/assets/video/. Remplace le nom du fichier ci-dessous si tu veux
-   utiliser video3.mp4, video4.mp4 ou video5.mp4 à la place. ═══ */
 import heroVideo from '../assets/hero-video.mp4'
 
 /* ═══ Hero badges ═══ */
@@ -357,16 +392,65 @@ const processSteps = [
   { num: '06', title: 'التسليم', desc: 'نسلّم الفيديو بصيغة عالية الجودة جاهز للنشر', icon: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 6L9 17l-5-5"/></svg>` }
 ]
 
-/* ═══ نماذج من أعمالنا ═══ */
+/* ═══════════════════════════════════════════════
+   نماذج من أعمالنا (بورتفوليو)
+   لكل عنصر:
+   - thumb      : رابط صورة مصغّرة (اختياري). إذا تُرك فارغًا يُستعمل التدرّج اللوني color كخلفية.
+   - videoType  : 'file'  → رابط فيديو مباشر (mp4/webm مُستضاف على CDN، ليس داخل مستودع git)
+                  'embed' → رابط embed من يوتيوب/فيميو (مثال يوتيوب: https://www.youtube.com/embed/VIDEO_ID)
+   - videoUrl   : الرابط المطابق لنوع videoType أعلاه
+   ⚠️ لا تضع ملفات فيديو ثقيلة داخل src/assets وترفعها لـ git (سبق أن سبّبت مشاكل push/build).
+      ارفعها على خدمة استضافة خارجية (Cloudinary, Bunny, S3, يوتيوب غير مُدرج) وضع الرابط هنا فقط.
+   ═══════════════════════════════════════════════ */
 const portfolioTabs = ['الكل', 'اعلانات تجارية', 'فيديوهات تعريفية', 'سوشيال ميديا', 'فعاليات', 'موشن جرافيك']
 const activeTab = ref('الكل')
 
 const portfolio = [
-  { title: 'إعلان مطعم فونيز', category: 'إعلان تجاري', duration: '01:20', color: 'linear-gradient(135deg,#8a3a1e,#c96a2f)' },
-  { title: 'فيديو تعريفي لشركة عقارية', category: 'فيديو تعريفي', duration: '02:15', color: 'linear-gradient(135deg,#1a2430,#2d3e50)' },
-  { title: 'إعلان منتج ذكي', category: 'إعلان تجاري', duration: '00:45', color: 'linear-gradient(135deg,#1f2937,#374151)' },
-  { title: 'تغطية مؤتمر تقني', category: 'فعاليات', duration: '03:10', color: 'linear-gradient(135deg,#0f2745,#1e4a7a)' },
-  { title: 'موشن جرافيك تعريفي', category: 'موشن جرافيك', duration: '03:10', color: 'linear-gradient(135deg,#1a1f2b,#2a2140)' }
+  {
+    title: 'إعلان مطعم فونيز',
+    category: 'إعلان تجاري',
+    duration: '01:20',
+    color: 'linear-gradient(135deg,#8a3a1e,#c96a2f)',
+    thumb: '',                 // ضع رابط صورة مصغّرة هنا
+    videoType: 'embed',
+    videoUrl: 'https://www.youtube.com/embed/VIDEO_ID_1'
+  },
+  {
+    title: 'فيديو تعريفي لشركة عقارية',
+    category: 'فيديو تعريفي',
+    duration: '02:15',
+    color: 'linear-gradient(135deg,#1a2430,#2d3e50)',
+    thumb: '',
+    videoType: 'embed',
+    videoUrl: 'https://www.youtube.com/embed/VIDEO_ID_2'
+  },
+  {
+    title: 'إعلان منتج ذكي',
+    category: 'إعلان تجاري',
+    duration: '00:45',
+    color: 'linear-gradient(135deg,#1f2937,#374151)',
+    thumb: '',
+    videoType: 'embed',
+    videoUrl: 'https://www.youtube.com/embed/VIDEO_ID_3'
+  },
+  {
+    title: 'تغطية مؤتمر تقني',
+    category: 'فعاليات',
+    duration: '03:10',
+    color: 'linear-gradient(135deg,#0f2745,#1e4a7a)',
+    thumb: '',
+    videoType: 'embed',
+    videoUrl: 'https://www.youtube.com/embed/VIDEO_ID_4'
+  },
+  {
+    title: 'موشن جرافيك تعريفي',
+    category: 'موشن جرافيك',
+    duration: '03:10',
+    color: 'linear-gradient(135deg,#1a1f2b,#2a2140)',
+    thumb: '',
+    videoType: 'embed',
+    videoUrl: 'https://www.youtube.com/embed/VIDEO_ID_5'
+  }
 ]
 
 const filteredPortfolio = computed(() =>
@@ -374,6 +458,33 @@ const filteredPortfolio = computed(() =>
     ? portfolio
     : portfolio.filter(p => p.category === activeTab.value)
 )
+
+// خلفية البطاقة: صورة مصغّرة إن وُجدت، وإلا التدرّج اللوني كاحتياطي
+function thumbStyle(item) {
+  if (item.thumb) {
+    return {
+      backgroundImage: `url(${item.thumb})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center'
+    }
+  }
+  return { background: item.color }
+}
+
+// ═══ Modal فتح/إغلاق الفيديو ═══
+const activeVideo = ref(null)
+
+function openVideo(item) {
+  if (!item.videoUrl || item.videoUrl.includes('VIDEO_ID')) {
+    // لا يوجد رابط فيديو حقيقي بعد لهذا العنصر
+    return
+  }
+  activeVideo.value = item
+}
+
+function closeVideo() {
+  activeVideo.value = null
+}
 
 /* ═══ لماذا تختار Infinity ═══ */
 const whyUs = [
@@ -546,12 +657,41 @@ const openFaq = ref(0)
 @media (max-width: 1024px) { .portfolio-grid { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 640px) { .portfolio-grid { grid-template-columns: repeat(2, 1fr); } }
 
+.portfolio-card { cursor: pointer; }
 .portfolio-card h4 { font-size: 14px; font-weight: 700; color: var(--gray-800); margin-top: 12px; margin-bottom: 4px; }
 .portfolio-cat { font-size: 12px; color: var(--gold); }
-.portfolio-thumb { position: relative; border-radius: 14px; aspect-ratio: 3/4; overflow: hidden; }
+.portfolio-thumb { position: relative; border-radius: 14px; aspect-ratio: 3/4; overflow: hidden; transition: transform 0.25s ease; }
+.portfolio-card:hover .portfolio-thumb { transform: translateY(-4px); box-shadow: 0 14px 26px rgba(0,0,0,0.12); }
 .portfolio-duration { position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.6); color: #fff; font-size: 11px; padding: 3px 8px; border-radius: 6px; }
 .portfolio-play { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 44px; height: 44px; border-radius: 50%; background: var(--gold); color: #fff; display: flex; align-items: center; justify-content: center; }
 .portfolio-more { text-align: center; margin-top: 40px; }
+
+/* ═══ MODAL VIDÉO ═══ */
+.video-modal {
+  position: fixed; inset: 0; z-index: 999;
+  background: rgba(15, 18, 25, 0.9);
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+}
+.video-modal-inner {
+  position: relative;
+  width: 100%; max-width: 900px;
+}
+.video-modal-player {
+  width: 100%;
+  aspect-ratio: 16/9;
+  border-radius: 14px;
+  background: #000;
+  display: block;
+}
+.video-modal-close {
+  position: absolute; top: -44px; left: 0;
+  background: transparent; border: none; color: #fff;
+  font-size: 22px; cursor: pointer; line-height: 1;
+}
+.video-modal-title {
+  color: #fff; text-align: center; margin-top: 16px; font-size: 15px; font-weight: 700;
+}
 
 /* ═══ WHY US ═══ */
 .why-section { background: var(--white); }
