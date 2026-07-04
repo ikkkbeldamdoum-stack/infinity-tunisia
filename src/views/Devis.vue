@@ -75,7 +75,7 @@
             <div v-if="currentStep === 1" key="step1">
               <div class="step-head">
                 <span class="step-dash"></span>
-                <h2>اختر الخدمة المطلوبة</h2>
+                <h2>اختر الخدمة أو المنتج المطلوب</h2>
                 <span class="step-dash"></span>
               </div>
 
@@ -232,7 +232,7 @@
 
               <div class="review-list">
                 <div class="review-block">
-                  <h4>الخدمات المطلوبة</h4>
+                  <h4>الخدمات / المنتجات المطلوبة</h4>
                   <p v-if="selectedServiceLabels.length">{{ selectedServiceLabels.join('، ') }}</p>
                   <p class="muted" v-else>لم يتم اختيار أي خدمة</p>
                 </div>
@@ -352,17 +352,42 @@ const heroBadges = [
   { title: 'حلول مخصصة', label: 'تناسب احتياجاتك', icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>` }
 ]
 
-/* ═══ Services ═══ */
+/* ═══ SERVICES (incluant les nouveaux produits d'impression) ═══ */
+// Icônes génériques – vous pouvez les remplacer par des SVG plus spécifiques
+const defaultIcon = `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="2" width="20" height="20" rx="2" /><path d="M8 8h8M8 12h6M8 16h4"/></svg>`
+
 const services = [
+  // Services existants
   { value: 'social', label: 'إدارة صفحات التواصل الإجتماعي', icon: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="4" width="16" height="16" rx="3"/><circle cx="12" cy="10" r="2.5"/><path d="M7 18c1-2.5 3-3.5 5-3.5s4 1 5 3.5"/></svg>` },
   { value: 'design', label: 'التصميم الجرافيكي والهوية البصرية', icon: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>` },
   { value: 'video', label: 'إنتاج الفيديو', icon: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="6" width="14" height="12" rx="2"/><polygon points="16 10 22 7 22 17 16 14"/></svg>` },
   { value: 'photo', label: 'التصوير', icon: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>` },
   { value: 'motion', label: 'Motion Design', icon: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><circle cx="17.5" cy="17.5" r="3.5"/></svg>` },
   { value: 'web', label: 'تطوير المواقع والتطبيقات', icon: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="4" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="18" x2="12" y2="21"/></svg>` },
-  { value: 'print', label: 'الطباعة والإشهار', icon: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><polyline points="6 9 6 2 18 2 18 9"/><rect x="4" y="9" width="16" height="11" rx="1"/><line x1="8" y1="14" x2="16" y2="14"/></svg>` },
   { value: 'ads', label: 'الإعلانات الممولة', icon: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 11l18-7-7 18-3-8-8-3z"/></svg>` },
   { value: 'marketing', label: 'تسويق رقمي متكامل', icon: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/></svg>` },
+
+  // ═══ NOUVEAUX PRODUITS D'IMPRESSION ═══
+  { value: 'cartes-visite', label: 'بطاقات الأعمال', icon: defaultIcon },
+  { value: 'flyers', label: 'Flyers (مطويات)', icon: defaultIcon },
+  { value: 'cartes-nfc', label: 'بطاقات NFC', icon: defaultIcon },
+  { value: 'baches', label: 'بَاشات إعلانية', icon: defaultIcon },
+  { value: 'carnets-factures', label: 'كشوفات الفواتير', icon: defaultIcon },
+  { value: 'carnets-autocopiants', label: 'كشوفات أتوكوبيانت', icon: defaultIcon },
+  { value: 'porte-documents', label: 'مجلدات وحافظات', icon: defaultIcon },
+  { value: 'carnets-tickets', label: 'كشوفات التذاكر', icon: defaultIcon },
+  { value: 'rollup', label: 'رول أب (Roll‑up)', icon: defaultIcon },
+  { value: 'mugs', label: 'أكواب مخصصة', icon: defaultIcon },
+  { value: 'stylos', label: 'أقلام إعلانية', icon: defaultIcon },
+  { value: 'porte-cles', label: 'مفاتيح شخصية', icon: defaultIcon },
+  { value: 'calendriers', label: 'تقاويم', icon: defaultIcon },
+  { value: 'trophees', label: 'جوائز وتذكارات', icon: defaultIcon },
+  { value: 'stickers', label: 'ملصقات (Stickers)', icon: defaultIcon },
+  { value: 'catalogues', label: 'كتالوجات', icon: defaultIcon },
+  { value: 'porte-affiches', label: 'حاملات الملصقات', icon: defaultIcon },
+  { value: 'habillage-vehicules', label: 'تغليف المركبات', icon: defaultIcon },
+  { value: 'cachets', label: 'أختام مهنية', icon: defaultIcon },
+
   { value: 'autre', label: 'أخرى (حدد لاحقًا)', icon: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>` }
 ]
 
@@ -430,6 +455,8 @@ function handleSubmit() {
   submitted.value = true
 }
 </script>
+
+
 
 <style scoped>
 /* ═══════════ FONDATIONS ═══════════ */
