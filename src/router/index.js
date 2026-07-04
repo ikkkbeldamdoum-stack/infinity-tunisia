@@ -19,7 +19,12 @@ import PhotoProductionView from '../views/PhotoProductionView.vue'
 // router/index.js
 import AdminView from '../views/admin/AdminView.vue'
 import ProductConfigView from '../views/ProductConfigView.vue'
-
+import BusinessCardProductView from '../views/BusinessCardProductView.vue'
+import BrochureProductView from '../views/BrochureProductView.vue'
+import RollupProductView from '../views/RollupProductView.vue'
+import FlyerProductView from '../views/FlyerProductView.vue'
+import BannersVinylProductView from '../views/BannersVinylView.vue'
+import SignageProductView from '../views/SignageView.vue'
 const routes = [
   { path: '/', name: 'accueil', component: Accueil, meta: { title: 'Infinity — Digital Marketing Solutions, Tunis' } },
   { path: '/qui-sommes-nous', name: 'qui-sommes-nous', component: QuiSommesNous, meta: { title: 'Qui sommes-nous ? — Infinity' } },
@@ -90,6 +95,14 @@ const routes = [
   name: 'product-config',
   component: ProductConfigView
 },
+{ path: '/produit/business-cards', name: 'business-card-product', component: BusinessCardProductView },
+{ path: '/produit/brochures', name: 'brochure-product', component: BrochureProductView },
+{ path: '/produit/rollup', name: 'rollup-product', component: RollupProductView },
+{ path: '/produit/flyers', name: 'flyer-product', component: FlyerProductView },
+{ path: '/produit/signage', name: 'signage-product', component: SignageProductView },
+
+
+{ path: '/produit/banners-vinyl', name: 'banners-vinyl-product', component: BannersVinylProductView },
 {
   path: '/admin',
   name: 'admin',
