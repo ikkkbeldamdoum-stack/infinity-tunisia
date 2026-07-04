@@ -1,4 +1,4 @@
-<!-- src/views/SocialMediaView.vue -->
+
 <template>
   <div dir="rtl" class="infinity-site">
 
@@ -161,8 +161,6 @@
             <div class="port-img" :style="{ backgroundImage: item.bg }">
               <div class="port-info">
                 <div class="port-stats">
-                  <span><strong>2.4K</strong> <br> <small>تفاعل</small></span>
-                  <span><strong>145</strong> <br> <small>متابع جديد</small></span>
                 </div>
                 <span class="port-cat">{{ item.cat }}</span>
                 <h4>{{ item.title }}</h4>
@@ -256,10 +254,10 @@ const stats = [
 ]
 
 const portfolio = [
-  { title: 'مطعم أبراج', cat: 'تصميم هوية', bg: 'linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.8)), url("../assets/restaurant.png")' },
-  { title: 'عيادة الأمل', cat: 'إدارة حسابات', bg: 'linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.8)), url("../assets/clinic.png")' },
-  { title: 'قصر الضيافة', cat: 'حملات إعلانية', bg: 'linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.8)), url("../assets/hotel.png")' },
-  { title: 'شركة البناء', cat: 'فيديو ترويجي', bg: 'linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.8)), url("../assets/construction.png")' },
+  {  bg: 'linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.8)), url("src/assets/restaurant.png")' },
+  {  bg: 'linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.8)), url("src/assets/clinic.png")' },
+  {  bg: 'linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.8)), url("src/assets/hotel.png")' },
+  {  bg: 'linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.8)), url("src/assets/construction.png")' },
 ]
 
 const faqs = [

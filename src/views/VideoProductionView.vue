@@ -1,4 +1,3 @@
-<!-- src/views/VideoProductionView.vue -->
 <template>
   <div dir="rtl" class="infinity-site">
 
@@ -36,8 +35,8 @@
           </div>
 
           <div class="hero-actions">
-            <RouterLink to="/devis" class="btn-hero-gold">اطلب عرض سعر</RouterLink>
-            <RouterLink to="/contact" class="btn-hero-outline">تواصل معنا</RouterLink>
+            <a href="#" class="btn-hero-gold" @click.prevent="showComingSoon">اطلب عرض سعر</a>
+            <a href="#" class="btn-hero-outline" @click.prevent="showComingSoon">تواصل معنا</a>
           </div>
         </div>
 
@@ -96,7 +95,7 @@
               <li>تعديل الصوت</li>
               <li>جودة 2K أو 4K</li>
             </ul>
-            <RouterLink :to="{ name: 'contact', query: { pack: 'مونتاج الفيديو' } }" class="btn-hero-gold full-width">احصل على العرض</RouterLink>
+            <a href="#" class="btn-hero-gold full-width" @click.prevent="showComingSoon">احصل على العرض</a>
           </div>
 
           <!-- 2. تصوير الفيديو -->
@@ -113,7 +112,7 @@
               <li>مونتاج احترافي</li>
               <li>جودة 2K أو 4K</li>
             </ul>
-            <RouterLink :to="{ name: 'contact', query: { pack: 'تصوير الفيديو' } }" class="btn-hero-gold full-width">احصل على العرض</RouterLink>
+            <a href="#" class="btn-hero-gold full-width" @click.prevent="showComingSoon">احصل على العرض</a>
           </div>
 
           <!-- 3. تصوير + مونتاج -->
@@ -130,7 +129,7 @@
               <li>جودة 2K أو 4K</li>
               <li>نسخة للسوشيال ميديا</li>
             </ul>
-            <RouterLink :to="{ name: 'contact', query: { pack: 'تصوير + مونتاج' } }" class="btn-hero-gold full-width">احصل على العرض</RouterLink>
+            <a href="#" class="btn-hero-gold full-width" @click.prevent="showComingSoon">احصل على العرض</a>
           </div>
 
           <!-- 4. فيديو تعريفي (الأكثر طلباً) -->
@@ -148,7 +147,7 @@
               <li>Transitions احترافية</li>
             </ul>
             <div class="popular-tag">الأكثر طلباً</div>
-            <RouterLink :to="{ name: 'contact', query: { pack: 'فيديو تعريفي' } }" class="btn-hero-gold full-width">احصل على العرض</RouterLink>
+            <a href="#" class="btn-hero-gold full-width" @click.prevent="showComingSoon">احصل على العرض</a>
           </div>
 
           <!-- 5. تغطية الفعاليات -->
@@ -164,7 +163,7 @@
               <li>جودة 2K و 4K</li>
               <li>تسليم محتوى جاهز</li>
             </ul>
-            <RouterLink :to="{ name: 'contact', query: { pack: 'تغطية الفعاليات' } }" class="btn-hero-gold full-width">احصل على العرض</RouterLink>
+            <a href="#" class="btn-hero-gold full-width" @click.prevent="showComingSoon">احصل على العرض</a>
           </div>
 
         </div>
@@ -189,7 +188,7 @@
       </div>
     </section>
 
-    <!-- ═══════════════ نماذج من أعمالنا ═══════════════ -->
+    <!-- ═══════════════ نماذج من أعمالنا (avec vidéos en fond) ═══════════════ -->
     <section class="section portfolio-section">
       <div class="wrap">
         <div class="section-head center">
@@ -212,10 +211,18 @@
             :key="item.title"
             @click="openVideo(item)"
           >
-            <div
-              class="portfolio-thumb"
-              :style="thumbStyle(item)"
-            >
+            <div class="portfolio-thumb">
+              <!-- Vidéo en arrière‑plan -->
+              <video
+                class="portfolio-video-bg"
+                :src="item.videoUrl"
+                autoplay
+                muted
+                loop
+                playsinline
+              ></video>
+
+              <!-- Contenu superposé -->
               <span class="portfolio-duration">{{ item.duration }}</span>
               <span class="portfolio-play">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
@@ -227,7 +234,7 @@
         </div>
 
         <div class="portfolio-more">
-          <RouterLink to="/portfolio" class="btn-hero-gold">عرض جميع الأعمال</RouterLink>
+          <a href="#" class="btn-hero-gold" @click.prevent="showComingSoon">عرض جميع الأعمال</a>
         </div>
       </div>
     </section>
@@ -244,6 +251,7 @@
             :src="activeVideo.videoUrl"
             controls
             autoplay
+            muted
             playsinline
             class="video-modal-player"
           ></video>
@@ -322,8 +330,8 @@
           <h3>أفكارك تستحق أن تُرى!</h3>
           <p>دعنا نساعدك على تحويل أفكارك إلى فيديو احترافي يحقق أهدافك ويميز علامتك التجارية.</p>
           <div class="cta-actions">
-            <RouterLink to="/devis" class="btn-hero-gold">اطلب عرض سعر</RouterLink>
-            <RouterLink to="/contact" class="btn-hero-outline">تواصل معنا</RouterLink>
+            <a href="#" class="btn-hero-gold" @click.prevent="showComingSoon">اطلب عرض سعر</a>
+            <a href="#" class="btn-hero-outline" @click.prevent="showComingSoon">تواصل معنا</a>
           </div>
         </div>
 
@@ -362,7 +370,14 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-import heroVideo from '../assets/hero-video.mp4'
+
+// ═══ استيراد ملفات الفيديو مع ?url لضمان الحصول على المسار النهائي في Vite ═══
+import heroVideo from '../assets/hero-video.mp4?url'
+import video1 from '../assets/video/video1.mp4?url'
+import video2 from '../assets/video/video2.mp4?url'
+import video3 from '../assets/video/video3.mp4?url'
+import video4 from '../assets/video/video4.mp4?url'
+import video5 from '../assets/video/video5.mp4?url'
 
 /* ═══ Hero badges ═══ */
 const heroBadges = [
@@ -394,13 +409,6 @@ const processSteps = [
 
 /* ═══════════════════════════════════════════════
    نماذج من أعمالنا (بورتفوليو)
-   لكل عنصر:
-   - thumb      : رابط صورة مصغّرة (اختياري). إذا تُرك فارغًا يُستعمل التدرّج اللوني color كخلفية.
-   - videoType  : 'file'  → رابط فيديو مباشر (mp4/webm مُستضاف على CDN، ليس داخل مستودع git)
-                  'embed' → رابط embed من يوتيوب/فيميو (مثال يوتيوب: https://www.youtube.com/embed/VIDEO_ID)
-   - videoUrl   : الرابط المطابق لنوع videoType أعلاه
-   ⚠️ لا تضع ملفات فيديو ثقيلة داخل src/assets وترفعها لـ git (سبق أن سبّبت مشاكل push/build).
-      ارفعها على خدمة استضافة خارجية (Cloudinary, Bunny, S3, يوتيوب غير مُدرج) وضع الرابط هنا فقط.
    ═══════════════════════════════════════════════ */
 const portfolioTabs = ['الكل', 'اعلانات تجارية', 'فيديوهات تعريفية', 'سوشيال ميديا', 'فعاليات', 'موشن جرافيك']
 const activeTab = ref('الكل')
@@ -410,46 +418,36 @@ const portfolio = [
     title: 'إعلان مطعم فونيز',
     category: 'إعلان تجاري',
     duration: '01:20',
-    color: 'linear-gradient(135deg,#8a3a1e,#c96a2f)',
-    thumb: '',                 // ضع رابط صورة مصغّرة هنا
-    videoType: 'embed',
-    videoUrl: 'https://www.youtube.com/embed/VIDEO_ID_1'
+    videoType: 'file',
+    videoUrl: video1
   },
   {
     title: 'فيديو تعريفي لشركة عقارية',
     category: 'فيديو تعريفي',
     duration: '02:15',
-    color: 'linear-gradient(135deg,#1a2430,#2d3e50)',
-    thumb: '',
-    videoType: 'embed',
-    videoUrl: 'https://www.youtube.com/embed/VIDEO_ID_2'
+    videoType: 'file',
+    videoUrl: video2
   },
   {
     title: 'إعلان منتج ذكي',
     category: 'إعلان تجاري',
     duration: '00:45',
-    color: 'linear-gradient(135deg,#1f2937,#374151)',
-    thumb: '',
-    videoType: 'embed',
-    videoUrl: 'https://www.youtube.com/embed/VIDEO_ID_3'
+    videoType: 'file',
+    videoUrl: video3
   },
   {
     title: 'تغطية مؤتمر تقني',
     category: 'فعاليات',
     duration: '03:10',
-    color: 'linear-gradient(135deg,#0f2745,#1e4a7a)',
-    thumb: '',
-    videoType: 'embed',
-    videoUrl: 'https://www.youtube.com/embed/VIDEO_ID_4'
+    videoType: 'file',
+    videoUrl: video4
   },
   {
     title: 'موشن جرافيك تعريفي',
     category: 'موشن جرافيك',
     duration: '03:10',
-    color: 'linear-gradient(135deg,#1a1f2b,#2a2140)',
-    thumb: '',
-    videoType: 'embed',
-    videoUrl: 'https://www.youtube.com/embed/VIDEO_ID_5'
+    videoType: 'file',
+    videoUrl: video5
   }
 ]
 
@@ -459,24 +457,13 @@ const filteredPortfolio = computed(() =>
     : portfolio.filter(p => p.category === activeTab.value)
 )
 
-// خلفية البطاقة: صورة مصغّرة إن وُجدت، وإلا التدرّج اللوني كاحتياطي
-function thumbStyle(item) {
-  if (item.thumb) {
-    return {
-      backgroundImage: `url(${item.thumb})`,
-      backgroundSize: 'cover',
-      backgroundPosition: 'center'
-    }
-  }
-  return { background: item.color }
-}
-
 // ═══ Modal فتح/إغلاق الفيديو ═══
 const activeVideo = ref(null)
 
 function openVideo(item) {
-  if (!item.videoUrl || item.videoUrl.includes('VIDEO_ID')) {
-    // لا يوجد رابط فيديو حقيقي بعد لهذا العنصر
+  console.log('فتح الفيديو:', item.title, item.videoUrl)
+  if (!item.videoUrl) {
+    alert('هذا الفيديو غير متوفر حالياً.')
     return
   }
   activeVideo.value = item
@@ -484,6 +471,11 @@ function openVideo(item) {
 
 function closeVideo() {
   activeVideo.value = null
+}
+
+// دالة مؤقتة للروابط غير المفعلة
+function showComingSoon() {
+  alert('هذه الصفحة قيد الإنشاء، سيتم تفعيلها قريباً.')
 }
 
 /* ═══ لماذا تختار Infinity ═══ */
@@ -618,7 +610,6 @@ const openFaq = ref(0)
 .pack-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.08); border-color: var(--gold); }
 .pack-card.popular { border-color: var(--gold); background: #fffbf0; transform: scale(1.02); }
 
-/* Nouveau style pour les images des packs */
 .pack-image {
   width: 80px;
   height: 80px;
@@ -646,7 +637,7 @@ const openFaq = ref(0)
 }
 .btn-hero-gold.full-width { width: 100%; margin-top: auto; }
 
-/* ═══ PORTFOLIO ═══ */
+/* ═══ PORTFOLIO avec vidéos en fond ═══ */
 .portfolio-section { background: var(--gray-50); }
 .portfolio-tabs { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 36px; }
 .tab-btn { background: var(--white); border: 1px solid var(--gray-200); color: var(--gray-600); padding: 9px 20px; border-radius: 50px; font-size: 13.5px; font-weight: 600; cursor: pointer; font-family: inherit; transition: all 0.2s; }
@@ -658,12 +649,71 @@ const openFaq = ref(0)
 @media (max-width: 640px) { .portfolio-grid { grid-template-columns: repeat(2, 1fr); } }
 
 .portfolio-card { cursor: pointer; }
-.portfolio-card h4 { font-size: 14px; font-weight: 700; color: var(--gray-800); margin-top: 12px; margin-bottom: 4px; }
-.portfolio-cat { font-size: 12px; color: var(--gold); }
-.portfolio-thumb { position: relative; border-radius: 14px; aspect-ratio: 3/4; overflow: hidden; transition: transform 0.25s ease; }
+.portfolio-card h4 {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-top: 12px;
+  margin-bottom: 4px;
+  text-shadow: 0 1px 2px rgba(255,255,255,0.5);
+}
+.portfolio-cat {
+  font-size: 12px;
+  color: #b8860b;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.portfolio-thumb {
+  position: relative;
+  border-radius: 14px;
+  aspect-ratio: 3/4;
+  overflow: hidden;
+  transition: transform 0.25s ease;
+  background: rgba(0,0,0,0.1); /* fallback léger */
+  border: 1px solid #e5e7eb;
+}
 .portfolio-card:hover .portfolio-thumb { transform: translateY(-4px); box-shadow: 0 14px 26px rgba(0,0,0,0.12); }
-.portfolio-duration { position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.6); color: #fff; font-size: 11px; padding: 3px 8px; border-radius: 6px; }
-.portfolio-play { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 44px; height: 44px; border-radius: 50%; background: var(--gold); color: #fff; display: flex; align-items: center; justify-content: center; }
+
+/* La vidéo occupe tout l'espace de la vignette */
+.portfolio-video-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+/* Éléments superposés */
+.portfolio-duration {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(0,0,0,0.7);
+  color: #fff;
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  z-index: 2;
+}
+.portfolio-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--gold);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  box-shadow: 0 0 20px rgba(248,177,1,0.4);
+}
 .portfolio-more { text-align: center; margin-top: 40px; }
 
 /* ═══ MODAL VIDÉO ═══ */
@@ -681,7 +731,7 @@ const openFaq = ref(0)
   width: 100%;
   aspect-ratio: 16/9;
   border-radius: 14px;
-  background: #000;
+  background: transparent;
   display: block;
 }
 .video-modal-close {

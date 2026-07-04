@@ -190,7 +190,7 @@
       </div>
     </section>
 
-    <!-- ═══════════ PORTFOLIO AVEC IMAGES RÉELLES ═══════════ -->
+    <!-- ═══════════ PORTFOLIO MIXTE (images + vidéos) ═══════════ -->
     <section class="section portfolio-sec">
       <div class="wrap">
         <div class="section-head center">
@@ -212,9 +212,21 @@
         <div class="portfolio-grid">
           <div class="port-item" v-for="item in filteredPortfolio" :key="item.id">
             <div class="port-img-wrapper">
-              <img 
-                :src="item.image" 
-                :alt="item.title" 
+              <!-- ✅ Vidéo pour la catégorie "فيديو" -->
+              <video
+                v-if="item.cat === 'فيديو'"
+                class="port-video"
+                :src="item.videoUrl"
+                autoplay
+                muted
+                loop
+                playsinline
+              ></video>
+              <!-- ✅ Image pour les autres catégories -->
+              <img
+                v-else
+                :src="item.image"
+                :alt="item.title"
                 class="port-img"
                 loading="lazy"
               />
@@ -377,6 +389,13 @@
 <script setup>
 import { ref, computed } from 'vue'
 
+// ═══ استيراد ملفات الفيديو (للقسم "فيديو" فقط) ═══
+import video1 from '../assets/video/video1.mp4?url'
+import video2 from '../assets/video/video2.mp4?url'
+import video3 from '../assets/video/video3.mp4?url'
+import video4 from '../assets/video/video4.mp4?url'
+import video5 from '../assets/video/video5.mp4?url'
+
 /* ═══════════ ICÔNES SVG ═══════════ */
 const iconSolutions = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>`
 const iconStrategy = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>`
@@ -450,10 +469,10 @@ const processSteps = [
 const portfolioTabs = ['الكل', 'تصميم', 'فيديو', 'إعلانات']
 const activeTab = ref('الكل')
 
-/* ═══════════ PORTFOLIO AVEC IMAGES RÉELLES ═══════════ */
-// 15 design, 10 publicités, 5 vidéos
+/* ═══════════ PORTFOLIO MIXTE (images + vidéos) ═══════════ */
+// Les éléments de catégorie "فيديو" possèdent une videoUrl, les autres une image.
 const portfolioItems = [
-  // === DESIGN (15 éléments) ===
+  // === DESIGN (15 éléments) : images ===
   ...Array.from({ length: 15 }, (_, i) => ({
     id: `design-${i + 1}`,
     title: `مشروع تصميم ${i + 1}`,
@@ -462,7 +481,7 @@ const portfolioItems = [
     image: new URL(`../assets/design/design${i + 1}.jpg`, import.meta.url).href,
   })),
   
-  // === PUBLICITÉS (10 éléments) ===
+  // === PUBLICITÉS (10 éléments) : images ===
   ...Array.from({ length: 10 }, (_, i) => ({
     id: `pub-${i + 1}`,
     title: `حملة إعلانية ${i + 1}`,
@@ -471,13 +490,15 @@ const portfolioItems = [
     image: new URL(`../assets/image/pub${i + 1}.jpg`, import.meta.url).href,
   })),
   
-  // === VIDÉOS (5 éléments) ===
+  // === VIDÉOS (5 éléments) : vidéos ===
   ...Array.from({ length: 5 }, (_, i) => ({
     id: `video-${i + 1}`,
     title: `فيديو ${i + 1}`,
     tag: i % 2 === 0 ? 'فيديو ترويجي' : 'موشن جرافيك',
     cat: 'فيديو',
-    image: new URL(`../assets/video/video${i + 1}.jpg`, import.meta.url).href,
+    // on alterne les 5 vidéos importées
+    videoUrl: [video1, video2, video3, video4, video5][i],
+    // Pas d'image pour ces éléments
   })),
 ]
 
@@ -715,7 +736,7 @@ const activeFaq = ref(null)
 .step-box h5 { color: #fff; font-size: 13.5px; margin-bottom: 6px; }
 .step-box p  { font-size: 12px; color: #888; line-height: 1.7; }
 
-/* ═══════════ PORTFOLIO AVEC IMAGES ═══════════ */
+/* ═══════════ PORTFOLIO MIXTE (images + vidéos) ═══════════ */
 .portfolio-sec { background: var(--bg); }
 .filter-tabs { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 40px; }
 .filter-tab { padding: 9px 22px; border-radius: 50px; font-size: 14px; font-weight: 600; font-family: var(--font); background: #fff; border: 1.5px solid var(--border); color: var(--grey); cursor: pointer; transition: all .25s var(--ease); }
@@ -740,6 +761,7 @@ const activeFaq = ref(null)
   position: relative;
   overflow: hidden;
 }
+/* Images */
 .port-img { 
   width: 100%; 
   height: 100%; 
@@ -749,6 +771,13 @@ const activeFaq = ref(null)
 }
 .port-item:hover .port-img { 
   transform: scale(1.08); 
+}
+/* Vidéos */
+.port-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 .port-overlay {
   position: absolute;
