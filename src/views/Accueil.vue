@@ -190,7 +190,7 @@
       </div>
     </section>
 
-    <!-- ═══════════ PORTFOLIO AVEC IMAGES ET VIDÉOS ═══════════ -->
+    <!-- ═══════════ PORTFOLIO AVEC IMAGES RÉELLES ═══════════ -->
     <section class="section portfolio-sec">
       <div class="wrap">
         <div class="section-head center">
@@ -199,39 +199,25 @@
           <p class="sec-desc">نفتخر بما قدمناه من أعمال لعملائنا في مختلف المجالات</p>
         </div>
         <div class="filter-tabs">
-          <button
-            v-for="tab in portfolioTabs"
-            :key="tab"
-            class="filter-tab"
-            :class="{ active: activeTab === tab }"
+          <button 
+            v-for="tab in portfolioTabs" 
+            :key="tab" 
+            class="filter-tab" 
+            :class="{ active: activeTab === tab }" 
             @click="activeTab = tab"
           >
             {{ tab }}
           </button>
         </div>
         <div class="portfolio-grid">
-          <div
-            class="port-item"
-            v-for="item in filteredPortfolio"
-            :key="item.id"
-            @click="item.cat === 'فيديو' ? openVideo(item) : null"
-          >
+          <div class="port-item" v-for="item in filteredPortfolio" :key="item.id">
             <div class="port-img-wrapper">
-              <!-- Images (design / publicités) : affichage direct -->
-              <template v-if="item.cat !== 'فيديو'">
-                <img
-                  :src="item.image"
-                  :alt="item.title"
-                  class="port-img"
-                  loading="lazy"
-                />
-              </template>
-
-              <!-- Vidéos : miniature statique + lecture au clic dans une modale -->
-              <template v-else>
-                <div class="port-video-thumb" :style="{ background: item.thumbColor }"></div>
-              </template>
-
+              <img 
+                :src="item.image" 
+                :alt="item.title" 
+                class="port-img"
+                loading="lazy"
+              />
               <div class="port-overlay">
                 <span class="port-play-icon" v-if="item.cat === 'فيديو'">▶</span>
               </div>
@@ -247,23 +233,6 @@
         </div>
       </div>
     </section>
-
-    <!-- ═══════════ MODAL LECTEUR VIDÉO (portfolio) ═══════════ -->
-    <Teleport to="body">
-      <div v-if="activeVideo" class="video-modal" @click.self="closeVideo">
-        <div class="video-modal-inner">
-          <button class="video-modal-close" @click="closeVideo" aria-label="إغلاق">✕</button>
-          <video
-            :src="activeVideo.image"
-            controls
-            autoplay
-            playsinline
-            class="video-modal-player"
-          ></video>
-          <h4 class="video-modal-title">{{ activeVideo.title }}</h4>
-        </div>
-      </div>
-    </Teleport>
 
     <!-- ═══════════ TESTIMONIALS ═══════════ -->
     <section class="section testimonials-sec">
@@ -481,42 +450,8 @@ const processSteps = [
 const portfolioTabs = ['الكل', 'تصميم', 'فيديو', 'إعلانات']
 const activeTab = ref('الكل')
 
-/* ═══════════════════════════════════════════════════════════
-   PORTFOLIO — IMAGES ET VIDÉOS
-   ───────────────────────────────────────────────────────────
-   • Les images (design/pub) restent des imports locaux : elles
-     sont bien présentes dans le dépôt git, donc `new URL(...)`
-     fonctionne normalement au build.
-
-   • Les VIDÉOS ne sont PLUS importées localement.
-     Rappel : video1.mp4 → video5.mp4 ont été retirés du dépôt
-     (git rm --cached) car trop volumineux pour GitHub/Vercel.
-     Un import local vers un fichier absent du dépôt fait planter
-     `npm run build` sur Vercel (erreur rollup "Could not resolve").
-
-     ➜ Remplace les URLs ci-dessous par tes vraies vidéos une fois
-        hébergées sur un service externe (Cloudinary, Bunny.net,
-        AWS S3 + CloudFront, YouTube non répertorié, etc.).
-        Tant que ce sont des chaînes de caractères (URLs), le build
-        ne peut plus planter, même si le lien n'est pas encore réel.
-   ═══════════════════════════════════════════════════════════ */
-const videoUrls = [
-  'https://REMPLACE-MOI.exemple-cdn.com/videos/video1.mp4',
-  'https://REMPLACE-MOI.exemple-cdn.com/videos/video2.mp4',
-  'https://REMPLACE-MOI.exemple-cdn.com/videos/video3.mp4',
-  'https://REMPLACE-MOI.exemple-cdn.com/videos/video4.mp4',
-  'https://REMPLACE-MOI.exemple-cdn.com/videos/video5.mp4',
-]
-
-// Couleurs de miniature pour les cartes vidéo (tant qu'aucune image de couverture n'est fournie)
-const videoThumbColors = [
-  'linear-gradient(135deg,#8a3a1e,#c96a2f)',
-  'linear-gradient(135deg,#1a2430,#2d3e50)',
-  'linear-gradient(135deg,#1f2937,#374151)',
-  'linear-gradient(135deg,#0f2745,#1e4a7a)',
-  'linear-gradient(135deg,#1a1f2b,#2a2140)',
-]
-
+/* ═══════════ PORTFOLIO AVEC IMAGES RÉELLES ═══════════ */
+// 15 design, 10 publicités, 5 vidéos
 const portfolioItems = [
   // === DESIGN (15 éléments) ===
   ...Array.from({ length: 15 }, (_, i) => ({
@@ -526,7 +461,7 @@ const portfolioItems = [
     cat: 'تصميم',
     image: new URL(`../assets/design/design${i + 1}.jpg`, import.meta.url).href,
   })),
-
+  
   // === PUBLICITÉS (10 éléments) ===
   ...Array.from({ length: 10 }, (_, i) => ({
     id: `pub-${i + 1}`,
@@ -535,15 +470,14 @@ const portfolioItems = [
     cat: 'إعلانات',
     image: new URL(`../assets/image/pub${i + 1}.jpg`, import.meta.url).href,
   })),
-
-  // === VIDÉOS (5 éléments) — URLs hébergées en externe (voir videoUrls ci-dessus) ===
+  
+  // === VIDÉOS (5 éléments) ===
   ...Array.from({ length: 5 }, (_, i) => ({
     id: `video-${i + 1}`,
     title: `فيديو ${i + 1}`,
     tag: i % 2 === 0 ? 'فيديو ترويجي' : 'موشن جرافيك',
     cat: 'فيديو',
-    image: videoUrls[i],
-    thumbColor: videoThumbColors[i],
+    image: new URL(`../assets/video/video${i + 1}.jpg`, import.meta.url).href,
   })),
 ]
 
@@ -551,21 +485,6 @@ const filteredPortfolio = computed(() => {
   if (activeTab.value === 'الكل') return portfolioItems
   return portfolioItems.filter(i => i.cat === activeTab.value)
 })
-
-// ═══ Modal lecture vidéo (portfolio) ═══
-const activeVideo = ref(null)
-
-function openVideo(item) {
-  if (!item.image || item.image.includes('REMPLACE-MOI')) {
-    // Aucun lien vidéo réel n'a encore été renseigné pour cet élément
-    return
-  }
-  activeVideo.value = item
-}
-
-function closeVideo() {
-  activeVideo.value = null
-}
 
 const testimonials = [
   { company: 'Innovex', initials: 'م', name: 'محمد العجمي', role: 'المدير التنفيذي — Innovex', text: 'تعاملنا مع فريق محترف، ساعدونا في تطوير هويتنا التسويقية وتحقيق نتائج فاقت توقعاتنا.' },
@@ -796,22 +715,22 @@ const activeFaq = ref(null)
 .step-box h5 { color: #fff; font-size: 13.5px; margin-bottom: 6px; }
 .step-box p  { font-size: 12px; color: #888; line-height: 1.7; }
 
-/* ═══════════ PORTFOLIO ═══════════ */
+/* ═══════════ PORTFOLIO AVEC IMAGES ═══════════ */
 .portfolio-sec { background: var(--bg); }
 .filter-tabs { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 40px; }
 .filter-tab { padding: 9px 22px; border-radius: 50px; font-size: 14px; font-weight: 600; font-family: var(--font); background: #fff; border: 1.5px solid var(--border); color: var(--grey); cursor: pointer; transition: all .25s var(--ease); }
 .filter-tab.active, .filter-tab:hover { background: var(--ink); color: #fff; border-color: var(--ink); transform: translateY(-2px); }
 .filter-tab.active { background: var(--gold); color: var(--ink); border-color: var(--gold); }
-.portfolio-grid {
-  display: grid;
-  grid-template-columns: repeat(5,1fr);
-  gap: 16px;
+.portfolio-grid { 
+  display: grid; 
+  grid-template-columns: repeat(5,1fr); 
+  gap: 16px; 
 }
-.port-item {
-  border-radius: var(--r);
-  overflow: hidden;
-  height: 220px;
-  position: relative;
+.port-item { 
+  border-radius: var(--r); 
+  overflow: hidden; 
+  height: 220px; 
+  position: relative; 
   cursor: pointer;
   background: #e8e8ed;
 }
@@ -821,21 +740,15 @@ const activeFaq = ref(null)
   position: relative;
   overflow: hidden;
 }
-.port-img {
-  width: 100%;
-  height: 100%;
+.port-img { 
+  width: 100%; 
+  height: 100%; 
   object-fit: cover;
   transition: transform .5s var(--ease);
   display: block;
 }
-.port-video-thumb {
-  width: 100%;
-  height: 100%;
-  transition: transform .5s var(--ease);
-}
-.port-item:hover .port-img,
-.port-item:hover .port-video-thumb {
-  transform: scale(1.08);
+.port-item:hover .port-img { 
+  transform: scale(1.08); 
 }
 .port-overlay {
   position: absolute;
@@ -862,51 +775,24 @@ const activeFaq = ref(null)
   color: var(--ink);
   box-shadow: 0 4px 16px rgba(0,0,0,.25);
 }
-.port-info {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: linear-gradient(to top, rgba(0,0,0,.88), transparent);
-  padding: 20px;
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  transform: translateY(4px);
-  transition: transform .35s var(--ease);
+.port-info { 
+  position: absolute; 
+  bottom: 0; 
+  left: 0; 
+  right: 0; 
+  background: linear-gradient(to top, rgba(0,0,0,.88), transparent); 
+  padding: 20px; 
+  color: #fff; 
+  display: flex; 
+  flex-direction: column; 
+  transform: translateY(4px); 
+  transition: transform .35s var(--ease); 
 }
-.port-item:hover .port-info {
-  transform: translateY(0);
+.port-item:hover .port-info { 
+  transform: translateY(0); 
 }
 .port-info span  { font-size: 14px; font-weight: 700; }
 .port-info small { font-size: 11.5px; color: var(--gold); margin-top: 4px; }
-
-/* ═══ MODAL VIDÉO ═══ */
-.video-modal {
-  position: fixed; inset: 0; z-index: 999;
-  background: rgba(15, 18, 25, 0.9);
-  display: flex; align-items: center; justify-content: center;
-  padding: 24px;
-}
-.video-modal-inner {
-  position: relative;
-  width: 100%; max-width: 900px;
-}
-.video-modal-player {
-  width: 100%;
-  aspect-ratio: 16/9;
-  border-radius: 14px;
-  background: #000;
-  display: block;
-}
-.video-modal-close {
-  position: absolute; top: -44px; left: 0;
-  background: transparent; border: none; color: #fff;
-  font-size: 22px; cursor: pointer; line-height: 1;
-}
-.video-modal-title {
-  color: #fff; text-align: center; margin-top: 16px; font-size: 15px; font-weight: 700;
-}
 
 /* TESTIMONIALS */
 .testimonials-sec { background: var(--bg-s); }

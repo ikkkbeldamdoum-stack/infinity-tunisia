@@ -132,7 +132,7 @@
             <div class="service-content">
               <h4>{{ s.label }}</h4>
               <p>{{ s.desc }}</p>
-              <RouterLink to="/devis" class="service-link">
+              <RouterLink :to="`/produit/${s.slug}`" class="service-link">
                 اطلب الآن
                 <span class="link-arrow">←</span>
               </RouterLink>
@@ -413,36 +413,42 @@ const statItems = [
 ═══════════════════════════════════════════════════════════ */
 const services = [
   {
+    slug: 'business-cards',
     label: 'بطاقات الأعمال',
     desc: 'تصميم وطباعة بطاقات احترافية بجميع أنواع الورق مع إمكانية إضافة تقنية NFC.',
     image: businessImg,
     glow: 'radial-gradient(circle, rgba(248,177,1,0.18), transparent 70%)'
   },
   {
+    slug: 'flyers',
     label: 'المطويات (Flyers)',
     desc: 'مطويات دعائية بجودة عالية ومقاسات متعددة تناسب مختلف الحملات الإعلانية.',
     image: flyerImg,
     glow: 'radial-gradient(circle, rgba(66,133,244,0.16), transparent 70%)'
   },
   {
+    slug: 'brochures',
     label: 'البروشورات',
     desc: 'تصميم احترافي وطباعة فاخرة تعكس هوية علامتك التجارية.',
     image: brochureImg,
     glow: 'radial-gradient(circle, rgba(214,41,118,0.14), transparent 70%)'
   },
   {
+    slug: 'rollup',
     label: 'رول أب (Roll Up)',
     desc: 'ستاندات رول أب عالية الجودة سهلة النقل والتركيب.',
     image: rollupImg,
     glow: 'radial-gradient(circle, rgba(17,17,17,0.10), transparent 70%)'
   },
   {
+    slug: 'banners-vinyl',
     label: 'اللافتات والفينيل',
     desc: 'طباعة لافتات وفينيل بمختلف الأحجام والخامات للاستخدام الداخلي والخارجي.',
     image: bannerImg,
     glow: 'radial-gradient(circle, rgba(66,133,244,0.16), transparent 70%)'
   },
   {
+    slug: 'signage',
     label: 'اللوحات والإشارات',
     desc: 'تصميم وتنفيذ اللوحات المضيئة، ولوحات المحلات، والإشارات التجارية باحترافية.',
     image: signImg,
@@ -969,6 +975,7 @@ function submitQuickQuote() {
   transition: all 0.25s var(--ease);
 }
 .qq-field input:focus, .qq-field select:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(248,177,1,0.15); }
+.qq-field input:disabled { background: var(--bg-panel); color: var(--text-muted); }
 .qq-submit { flex: 1 1 160px; border: none; }
 .qq-hint { position: relative; z-index: 1; color: #16a34a; font-weight: 700; font-size: 14px; margin: 0 0 20px; }
 @media (max-width: 640px) { .quick-quote-form { flex-direction: column; } }

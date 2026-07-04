@@ -18,7 +18,7 @@ import PrintDesignView from '../views/PrintDesignView.vue'
 import PhotoProductionView from '../views/PhotoProductionView.vue'
 // router/index.js
 import AdminView from '../views/admin/AdminView.vue'
-
+import ProductConfigView from '../views/ProductConfigView.vue'
 
 const routes = [
   { path: '/', name: 'accueil', component: Accueil, meta: { title: 'Infinity — Digital Marketing Solutions, Tunis' } },
@@ -84,6 +84,11 @@ const routes = [
   name: 'rendez-vous', 
   component: RendezVousView,
   meta: { title: 'احجز موعداً — Infinity' }
+},
+{
+  path: '/produit/:slug',
+  name: 'product-config',
+  component: ProductConfigView
 },
 {
   path: '/admin',
