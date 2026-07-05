@@ -274,20 +274,7 @@
       </div>
     </div>
 
-    <!-- ═══════════════ FORMULAIRE DE COMMANDE ═══════════════ -->
-    <div class="wrap" id="order-form">
-      <div class="bc-order-form">
-        <h3>أكمل طلبك</h3>
-        <div class="bc-order-form-grid">
-          <input type="text" v-model="contact.name" placeholder="الاسم الكامل" />
-          <input type="tel" v-model="contact.phone" placeholder="رقم الهاتف" />
-        </div>
-        <button type="button" class="btn-gold bc-order-submit" @click="submitOrder" :disabled="!canOrder">
-          <span v-if="orderSent">✅ تم إرسال طلبك، سنتواصل معك قريباً</span>
-          <span v-else>تأكيد الطلب — {{ formatMoney(estimatedPrice) }} د.ت</span>
-        </button>
-      </div>
-    </div>
+
 
     <!-- ═══════════════ GUIDE D'ACHAT ═══════════════ -->
     <section class="bc-section bc-guide" id="guide">
@@ -419,28 +406,6 @@
       </div>
     </section>
 
-    <!-- ═══════════════ FAQ ═══════════════ -->
-    <section class="bc-section bc-faq" id="faq">
-      <div class="wrap">
-        <h2>الأسئلة الشائعة</h2>
-        <div class="bc-faq-list">
-          <div
-            v-for="(faq, idx) in faqs"
-            :key="idx"
-            class="bc-faq-item"
-            :class="{ open: openFaq === idx }"
-          >
-            <button type="button" class="bc-faq-question" @click="openFaq = openFaq === idx ? null : idx">
-              <span>{{ faq.q }}</span>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="bc-faq-chevron"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-            <div class="bc-faq-answer" v-show="openFaq === idx">
-              <p>{{ faq.a }}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
     <!-- ═══════════════ AVIS CLIENTS (illustratifs) ═══════════════ -->
     <section class="bc-section bc-reviews">
@@ -459,19 +424,7 @@
       </div>
     </section>
 
-    <!-- ═══════════════ PRODUITS SIMILAIRES ═══════════════ -->
-    <section class="bc-section bc-related">
-      <div class="wrap">
-        <h2>منتجات ذات صلة</h2>
-        <div class="bc-related-grid">
-          <a v-for="rp in relatedProducts" :key="rp.slug" :href="rp.href" class="bc-related-card">
-            <div class="bc-related-thumb"></div>
-            <span class="bc-related-name">{{ rp.name }}</span>
-            <span class="bc-related-price">ابتداءً من {{ formatMoney(rp.priceFrom) }} د.ت</span>
-          </a>
-        </div>
-      </div>
-    </section>
+
   </div>
 </template>
 

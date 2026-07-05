@@ -23,6 +23,7 @@ import RollUpProductView from '../views/RollUpProductView.vue'
 import FlyerProductView from '../views/FlyerProductView.vue'
 import BannersVinylProductView from '../views/BannersVinylView.vue'
 import SignageProductView from '../views/SignageView.vue'
+import NfcProductView from '../views/NfcProductView.vue'
 
 const routes = [
   { path: '/', name: 'accueil', component: Accueil, meta: { title: 'Infinity — Digital Marketing Solutions, Tunis' } },
@@ -97,12 +98,92 @@ const routes = [
   { path: '/produit/flyers', name: 'flyer-product', component: FlyerProductView },
   { path: '/produit/signage', name: 'signage-product', component: SignageProductView },
   { path: '/produit/banners-vinyl', name: 'banners-vinyl-product', component: BannersVinylProductView },
+  { path: '/produit/cartes-nfc', name: 'nfc-product', component: NfcProductView },
   {
     path: '/admin',
     name: 'admin',
     component: AdminView,
     meta: { title: 'لوحة التحكم — Infinity' }
-  }
+  },
+  {
+  path: '/produit/stickers-autocollants',
+  name: 'stickers-product',
+  component: () => import('../views/StickersProductView.vue'),
+  meta: { title: 'ستيكرات وملصقات — Infinity' }
+},
+{
+  path: '/produit/porte-affiches',
+  name: 'porte-affiches-product',
+  component: () => import('../views/PorteAffichesProductView.vue'),
+  meta: { title: 'حوامل الملصقات — Infinity' }
+},
+{
+  path: '/produit/baches-publicitaires',
+  name: 'baches-publicitaires-product',
+  component: () => import('../views/BachesPublicitairesProductView.vue'),
+  meta: { title: 'بافانات إشهارية — Infinity' }
+},
+{
+  path: '/produit/habillage-vehicules',
+  name: 'habillage-vehicules-product',
+  component: () => import('../views/HabillageVehiculesProductView.vue'),
+  meta: { title: 'تلبيس السيارات — Infinity' }
+},
+{
+  path: '/produit/carnets-factures',
+  name: 'carnets-factures-product',
+  component: () => import('../views/CarnetsFacturesProductView.vue'),
+  meta: { title: 'كرانيه الفواتير — Infinity' }
+},
+{
+  path: '/produit/porte-documents',
+  name: 'porte-documents-product',
+  component: () => import('../views/PorteDocumentsProductView.vue'),
+  meta: { title: 'حافظات المستندات — Infinity' }
+},
+{
+  path: '/produit/cachets-professionnels',
+  name: 'cachets-professionnels-product',
+  component: () => import('../views/CachetsProfessionnelsProductView.vue'),
+  meta: { title: 'الأختام المهنية — Infinity' }
+},
+{
+  path: '/produit/calendriers',
+  name: 'calendriers-product',
+  component: () => import('../views/CalendriersProductView.vue'),
+  meta: { title: 'التقاويم الإشهارية — Infinity' }
+},
+
+{
+  path: '/produit/mugs-personnalises',
+  name: 'mugs-personnalises-product',
+  component: () => import('../views/MugsPersonnalisesProductView.vue'),
+  meta: { title: 'الأكواب المخصصة — Infinity' }
+},
+{
+  path: '/produit/stylos-publicitaires',
+  name: 'stylos-publicitaires-product',
+  component: () => import('../views/StylosPublicitairesProductView.vue'),
+  meta: { title: 'الأقلام الإشهارية — Infinity' }
+},
+{
+  path: '/produit/porte-cles',
+  name: 'porte-cles-product',
+  component: () => import('../views/PorteClesProductView.vue'),
+  meta: { title: 'ميداليات المفاتيح — Infinity' }
+},
+{
+  path: '/produit/trophees',
+  name: 'trophees-product',
+  component: () => import('../views/TropheesProductView.vue'),
+  meta: { title: 'الدروع والجوائز — Infinity' }
+},
+  {
+  path: '/produit/catalogues',
+  name: 'catalogue-product',
+  component: () => import('../views/CataloguesProductView.vue'),
+  meta: { title: 'الكتالوجات — Infinity' }
+}
 ]
 
 const router = createRouter({

@@ -410,23 +410,7 @@
       </div>
     </section>
 
-    <!-- ═══════════════ GABARITS / TEMPLATES ═══════════════ -->
-    <section class="bro-section bro-templates" id="templates">
-      <div class="wrap">
-        <h2>حمّل القالب الجاهز حسب مقاسك</h2>
-        <p class="bro-section-sub">استخدم قوالبنا الجاهزة لتصميم برنامج التصميم المفضل لديك، وتجنّب أخطاء الهامش والقصّ والترتيب.</p>
-        <div class="bro-templates-grid">
-          <div class="bro-template-card" v-for="f in formats" :key="f.id">
-            <div class="bro-template-preview" :style="{ aspectRatio: f.ratio || '1 / 1.4' }"></div>
-            <span class="bro-template-name">{{ f.label }}</span>
-            <button type="button" class="bro-template-download">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              تحميل القالب
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
+
 
     <!-- ═══════════════ COMMENT COMMANDER ═══════════════ -->
     <section class="bro-section bro-how-to-order" id="how-to-order">
@@ -442,28 +426,7 @@
       </div>
     </section>
 
-    <!-- ═══════════════ FAQ ═══════════════ -->
-    <section class="bro-section bro-faq" id="faq">
-      <div class="wrap">
-        <h2>الأسئلة الشائعة</h2>
-        <div class="bro-faq-list">
-          <div
-            v-for="(faq, idx) in faqs"
-            :key="idx"
-            class="bro-faq-item"
-            :class="{ open: openFaq === idx }"
-          >
-            <button type="button" class="bro-faq-question" @click="openFaq = openFaq === idx ? null : idx">
-              <span>{{ faq.q }}</span>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="bro-faq-chevron"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-            <div class="bro-faq-answer" v-show="openFaq === idx">
-              <p>{{ faq.a }}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+
 
     <!-- ═══════════════ AVIS CLIENTS (illustratifs) ═══════════════ -->
     <section class="bro-section bro-reviews">
@@ -482,19 +445,7 @@
       </div>
     </section>
 
-    <!-- ═══════════════ PRODUITS SIMILAIRES ═══════════════ -->
-    <section class="bro-section bro-related">
-      <div class="wrap">
-        <h2>منتجات ذات صلة</h2>
-        <div class="bro-related-grid">
-          <a v-for="rp in relatedProducts" :key="rp.slug" :href="rp.href" class="bro-related-card">
-            <div class="bro-related-thumb"></div>
-            <span class="bro-related-name">{{ rp.name }}</span>
-            <span class="bro-related-price">ابتداءً من {{ formatMoney(rp.priceFrom) }} د.ت</span>
-          </a>
-        </div>
-      </div>
-    </section>
+
   </div>
 </template>
 

@@ -1,3 +1,4 @@
+<!-- src/views/ContactView.vue -->
 <template>
   <div dir="rtl" class="contact-page">
 
@@ -25,13 +26,11 @@
           </div>
 
           <div class="calc-body">
-            <!-- Days -->
             <div class="calc-field">
               <label for="calc-days">عدد الأيام</label>
               <input id="calc-days" type="number" min="1" v-model.number="calcDays" />
             </div>
 
-            <!-- Wilayas -->
             <div class="calc-field wilayas-field">
               <label>الولايات المستهدفة</label>
               <div class="wilayas-grid">
@@ -47,7 +46,6 @@
               </div>
             </div>
 
-            <!-- Result -->
             <div class="calc-result">
               <span class="result-label">السعر الإجمالي</span>
               <span class="result-value">{{ totalPrice }} <small>د.ت</small></span>
@@ -86,13 +84,13 @@
 
             <h4 class="social-title">تابعنا</h4>
             <div class="social-links">
-              <a href="#" class="social-link" aria-label="Instagram">
+              <a href="https://instagram.com/infinity.agency.tn" target="_blank" class="social-link" aria-label="Instagram">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
               </a>
-              <a href="#" class="social-link" aria-label="Facebook">
+              <a href="https://facebook.com/infinity.agency.tn" target="_blank" class="social-link" aria-label="Facebook">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
               </a>
-              <a href="#" class="social-link" aria-label="Site Web">
+              <a href="https://infinity-agency.com" target="_blank" class="social-link" aria-label="Site Web">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
               </a>
             </div>
@@ -128,40 +126,14 @@
                 <div class="float-group">
                   <select id="pack" v-model="form.pack">
                     <option value="" disabled selected>اختر الباقة...</option>
-                    <optgroup label="تطوير مواقع">
-                      <option value="Landing Page">Landing Page - ابتداءً من 750 د.ت</option>
-                      <option value="Site Vitrine">Site Vitrine - ابتداءً من 1500 د.ت</option>
-                      <option value="E-Commerce">E-Commerce - ابتداءً من 1900 د.ت</option>
-                      <option value="نظام الحجز">نظام الحجز الإلكتروني - حسب المشروع</option>
-                      <option value="صيانة ودعم فني">الصيانة والدعم الفني - 200 د.ت شهريًا</option>
+                    
+                    <optgroup label="بطاقات NFC الذكية">
+                      <option value="nfc-standard-1">بطاقة NFC أساسية - بطاقة واحدة - 75 د.ت</option>
+                      <option value="nfc-standard-2">بطاقة NFC أساسية - بطاقتين - 125 د.ت</option>
+                      <option value="nfc-premium-1">بطاقة NFC مميزة - بطاقة واحدة - 220 د.ت</option>
+                      <option value="nfc-premium-2">بطاقة NFC مميزة - بطاقتين - 270 د.ت</option>
                     </optgroup>
-                    <optgroup label="التسويق الرقمي">
-                      <option value="BUSINESS">BUSINESS - 990 DT</option>
-                      <option value="PREMIUM">PREMIUM - 750 DT</option>
-                      <option value="STARTER">STARTER - 390 DT</option>
-                    </optgroup>
-                    <optgroup label="الفيديو">
-                      <option value="مونتاج الفيديو">مونتاج الفيديو - 120 DT</option>
-                      <option value="تصوير الفيديو">تصوير الفيديو - 300 DT</option>
-                      <option value="تصوير + مونتاج">تصوير + مونتاج - 390 DT</option>
-                      <option value="فيديو تعريفي">فيديو تعريفي - 150 DT</option>
-                      <option value="تغطية الفعاليات">تغطية الفعاليات - 900 DT</option>
-                    </optgroup>
-                    <optgroup label="الإعلانات الممولة">
-                      <option value="7 أيام - 130 DT">7 أيام - 130 DT</option>
-                      <option value="14 يوم - 250 DT">14 يوم - 250 DT</option>
-                      <option value="30 يوم - 590 DT">30 يوم - 590 DT</option>
-                      <option value="حملة مخصصة">حملة مخصصة (حسب الحاسبة)</option>
-                    </optgroup>
-                    <optgroup label="التصميم والهوية">
-                      <option value="تصميم منشور">تصميم منشور - 40 DT</option>
-                      <option value="باقة 10 منشورات">باقة 10 منشورات - 300 DT</option>
-                      <option value="Flyer">Flyer - 100 DT</option>
-                      <option value="Catalogue PDF">Catalogue PDF - 180 DT</option>
-                      <option value="Menu Restaurant">Menu Restaurant - 150 DT</option>
-                      <option value="Logo Design">Logo Design - 120 DT</option>
-                      <option value="الهوية البصرية">الهوية البصرية - 300 DT</option>
-                    </optgroup>
+                    
                     <optgroup label="الطباعة والدعاية">
                       <option value="بطاقات الأعمال">بطاقات الأعمال</option>
                       <option value="المطويات (Flyers)">المطويات (Flyers)</option>
@@ -175,7 +147,58 @@
                       <option value="الملصقات (Stickers)">الملصقات (Stickers)</option>
                       <option value="الكتالوجات">الكتالوجات</option>
                       <option value="البانرات الإعلانية">البانرات الإعلانية</option>
+                      <option value="بافانات إشهارية">بافانات إشهارية (Bâches)</option>
+                      <option value="تلبيس السيارات">تلبيس السيارات</option>
+                      <option value="كرانيه الفواتير">كرانيه الفواتير</option>
+                      <option value="حافظات المستندات">حافظات المستندات</option>
+                      <option value="الأختام المهنية">الأختام المهنية</option>
+                      <option value="التقاويم الإشهارية">التقاويم الإشهارية</option>
+                      <option value="الأكواب المخصصة">الأكواب المخصصة</option>
+                      <option value="الأقلام الإشهارية">الأقلام الإشهارية</option>
+                      <option value="ميداليات المفاتيح">ميداليات المفاتيح</option>
+                      <option value="الدروع والجوائز">الدروع والجوائز</option>
+                      <option value="حوامل الملصقات">حوامل الملصقات</option>
                     </optgroup>
+                    
+                    <optgroup label="التصميم والهوية">
+                      <option value="تصميم منشور">تصميم منشور - 40 DT</option>
+                      <option value="باقة 10 منشورات">باقة 10 منشورات - 300 DT</option>
+                      <option value="Flyer">Flyer - 100 DT</option>
+                      <option value="Catalogue PDF">Catalogue PDF - 180 DT</option>
+                      <option value="Menu Restaurant">Menu Restaurant - 150 DT</option>
+                      <option value="Logo Design">Logo Design - 120 DT</option>
+                      <option value="الهوية البصرية">الهوية البصرية - 300 DT</option>
+                    </optgroup>
+                    
+                    <optgroup label="تطوير مواقع">
+                      <option value="Landing Page">Landing Page - ابتداءً من 750 د.ت</option>
+                      <option value="Site Vitrine">Site Vitrine - ابتداءً من 1500 د.ت</option>
+                      <option value="E-Commerce">E-Commerce - ابتداءً من 1900 د.ت</option>
+                      <option value="نظام الحجز">نظام الحجز الإلكتروني - حسب المشروع</option>
+                      <option value="صيانة ودعم فني">الصيانة والدعم الفني - 200 د.ت شهريًا</option>
+                    </optgroup>
+                    
+                    <optgroup label="التسويق الرقمي">
+                      <option value="BUSINESS">BUSINESS - 990 DT</option>
+                      <option value="PREMIUM">PREMIUM - 750 DT</option>
+                      <option value="STARTER">STARTER - 390 DT</option>
+                    </optgroup>
+                    
+                    <optgroup label="الفيديو">
+                      <option value="مونتاج الفيديو">مونتاج الفيديو - 120 DT</option>
+                      <option value="تصوير الفيديو">تصوير الفيديو - 300 DT</option>
+                      <option value="تصوير + مونتاج">تصوير + مونتاج - 390 DT</option>
+                      <option value="فيديو تعريفي">فيديو تعريفي - 150 DT</option>
+                      <option value="تغطية الفعاليات">تغطية الفعاليات - 900 DT</option>
+                    </optgroup>
+                    
+                    <optgroup label="الإعلانات الممولة">
+                      <option value="7 أيام - 130 DT">7 أيام - 130 DT</option>
+                      <option value="14 يوم - 250 DT">14 يوم - 250 DT</option>
+                      <option value="30 يوم - 590 DT">30 يوم - 590 DT</option>
+                      <option value="حملة مخصصة">حملة مخصصة (حسب الحاسبة)</option>
+                    </optgroup>
+                    
                     <optgroup label="التصوير الفوتوغرافي">
                       <option value="جلسة تصوير لمدة ساعتين - ابتداءً من 190 د.ت">جلسة تصوير لمدة ساعتين - ابتداءً من 190 د.ت</option>
                       <option value="جلسة تصوير لمدة 4 ساعات - ابتداءً من 300 د.ت">جلسة تصوير لمدة 4 ساعات - ابتداءً من 300 د.ت</option>
@@ -215,7 +238,7 @@ import { useRoute } from 'vue-router'
 
 const route = useRoute()
 
-// Wilayas
+// ═══════════════ WILAYAS ═══════════════
 const allWilayas = [
   'أريانة', 'باجة', 'بن عروس', 'بنزرت', 'قابس', 'قفصة', 'جندوبة',
   'القيروان', 'القصرين', 'قبلي', 'الكاف', 'مهدية', 'منوبة', 'مدنين',
@@ -223,7 +246,7 @@ const allWilayas = [
   'تطاوين', 'توزر', 'تونس', 'زغوان'
 ]
 
-// Calculator
+// ═══════════════ CALCULATOR ═══════════════
 const calcDays = ref(14)
 const selectedWilayas = ref([])
 const calcWilayas = ref(0)
@@ -251,7 +274,7 @@ const useCalculatedPrice = () => {
   if (formEl) formEl.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
 
-// Form
+// ═══════════════ FORM ═══════════════
 const form = reactive({
   name: '',
   email: '',
@@ -262,15 +285,28 @@ const form = reactive({
 
 const formRef = ref(null)
 
+// Liste de tous les packs pour la correspondance URL
 const allPacks = [
-  'Landing Page', 'Site Vitrine', 'E-Commerce', 'نظام الحجز', 'صيانة ودعم فني',
-  'BUSINESS', 'PREMIUM', 'STARTER',
-  'مونتاج الفيديو', 'تصوير الفيديو', 'تصوير + مونتاج', 'فيديو تعريفي', 'تغطية الفعاليات',
-  '7 أيام - 130 DT', '14 يوم - 250 DT', '30 يوم - 590 DT', 'حملة مخصصة',
-  'تصميم منشور', 'باقة 10 منشورات', 'Flyer', 'Catalogue PDF', 'Menu Restaurant', 'Logo Design', 'الهوية البصرية',
+  // NFC
+  'nfc-standard-1', 'nfc-standard-2', 'nfc-premium-1', 'nfc-premium-2',
+  // Print
   'بطاقات الأعمال', 'المطويات (Flyers)', 'البروشورات', 'رول أب (Roll Up)',
   'اللافتات والفينيل', 'اللوحات والإشارات', 'استيكرات السيارات', 'واجهات المحلات',
   'الطباعة الدعائية', 'الملصقات (Stickers)', 'الكتالوجات', 'البانرات الإعلانية',
+  'بافانات إشهارية', 'تلبيس السيارات', 'كرانيه الفواتير', 'حافظات المستندات',
+  'الأختام المهنية', 'التقاويم الإشهارية', 'الأكواب المخصصة', 'الأقلام الإشهارية',
+  'ميداليات المفاتيح', 'الدروع والجوائز', 'حوامل الملصقات',
+  // Design
+  'تصميم منشور', 'باقة 10 منشورات', 'Flyer', 'Catalogue PDF', 'Menu Restaurant', 'Logo Design', 'الهوية البصرية',
+  // Web
+  'Landing Page', 'Site Vitrine', 'E-Commerce', 'نظام الحجز', 'صيانة ودعم فني',
+  // Marketing
+  'BUSINESS', 'PREMIUM', 'STARTER',
+  // Vidéo
+  'مونتاج الفيديو', 'تصوير الفيديو', 'تصوير + مونتاج', 'فيديو تعريفي', 'تغطية الفعاليات',
+  // Ads
+  '7 أيام - 130 DT', '14 يوم - 250 DT', '30 يوم - 590 DT', 'حملة مخصصة',
+  // Photo
   'جلسة تصوير لمدة ساعتين - ابتداءً من 190 د.ت',
   'جلسة تصوير لمدة 4 ساعات - ابتداءً من 300 د.ت',
   'تصوير المنتجات - ابتداءً من 120 د.ت',
@@ -279,10 +315,34 @@ const allPacks = [
 ]
 
 onMounted(() => {
-  const packFromQuery = route.query.pack
-  if (packFromQuery && allPacks.includes(packFromQuery)) {
-    form.pack = packFromQuery
+  // ═══ GESTION DES PARAMÈTRES URL ═══
+  const service = route.query.service
+  const quantite = route.query.quantite
+  const prix = route.query.prix
+  const pack = route.query.pack
+  const message = route.query.message
+
+  // 1. Paramètres NFC (depuis CarteNfcPricingModern)
+  if (service === 'nfc-standard') {
+    form.pack = quantite === '2' ? 'nfc-standard-2' : 'nfc-standard-1'
+    form.message = `طلب بطاقة NFC - الباقة الأساسية - ${quantite === '2' ? 'بطاقتين' : 'بطاقة واحدة'} - السعر: ${prix} د.ت`
+  } else if (service === 'nfc-premium') {
+    form.pack = quantite === '2' ? 'nfc-premium-2' : 'nfc-premium-1'
+    form.message = `طلب بطاقة NFC - الباقة المميزة - ${quantite === '2' ? 'بطاقتين' : 'بطاقة واحدة'} - السعر: ${prix} د.ت`
+  } 
+  // 2. Paramètres pack générique (depuis les pages produits)
+  else if (pack && allPacks.includes(pack)) {
+    form.pack = pack
+    if (message) {
+      form.message = message
+    }
   }
+  // 3. Paramètre message seul
+  else if (message) {
+    form.message = message
+  }
+
+  // Défiler vers la calculatrice si hash présent
   if (route.hash === '#price-calculator') {
     const el = document.getElementById('price-calculator')
     if (el) setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100)
@@ -302,7 +362,8 @@ const handleSubmit = () => {
   }
 
   console.log('Données du formulaire :', form)
-  // Reset
+  
+  // Réinitialiser le formulaire
   form.name = ''
   form.email = ''
   form.phone = ''

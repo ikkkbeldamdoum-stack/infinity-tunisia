@@ -404,23 +404,7 @@
       </div>
     </section>
 
-    <!-- ═══════════════ GABARITS / TEMPLATES ═══════════════ -->
-    <section class="sg-section sg-templates" id="templates">
-      <div class="wrap">
-        <h2>حمّل القالب الجاهز حسب نوع اللوحة</h2>
-        <p class="sg-section-sub">قوالب جاهزة بأنواع اللوحات المختلفة لبرامج التصميم، مع هوامش الأمان والقصّ.</p>
-        <div class="sg-templates-grid">
-          <div class="sg-template-card" v-for="t in templateTypes" :key="t.id">
-            <div class="sg-template-preview" :style="{ aspectRatio: t.ratio || '1 / 0.7' }"></div>
-            <span class="sg-template-name">{{ t.label }}</span>
-            <button type="button" class="sg-template-download">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              تحميل القالب
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
+  
 
     <!-- ═══════════════ COMMENT COMMANDER ═══════════════ -->
     <section class="sg-section sg-how-to-order" id="how-to-order">
@@ -431,29 +415,6 @@
             <span class="sg-hto-num">{{ idx + 1 }}</span>
             <h4>{{ step.title }}</h4>
             <p>{{ step.desc }}</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ═══════════════ FAQ ═══════════════ -->
-    <section class="sg-section sg-faq" id="faq">
-      <div class="wrap">
-        <h2>الأسئلة الشائعة</h2>
-        <div class="sg-faq-list">
-          <div
-            v-for="(faq, idx) in faqs"
-            :key="idx"
-            class="sg-faq-item"
-            :class="{ open: openFaq === idx }"
-          >
-            <button type="button" class="sg-faq-question" @click="openFaq = openFaq === idx ? null : idx">
-              <span>{{ faq.q }}</span>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="sg-faq-chevron"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-            <div class="sg-faq-answer" v-show="openFaq === idx">
-              <p>{{ faq.a }}</p>
-            </div>
           </div>
         </div>
       </div>
@@ -476,19 +437,7 @@
       </div>
     </section>
 
-    <!-- ═══════════════ PRODUITS SIMILAIRES ═══════════════ -->
-    <section class="sg-section sg-related">
-      <div class="wrap">
-        <h2>منتجات ذات صلة</h2>
-        <div class="sg-related-grid">
-          <a v-for="rp in relatedProducts" :key="rp.slug" :href="rp.href" class="sg-related-card">
-            <div class="sg-related-thumb"></div>
-            <span class="sg-related-name">{{ rp.name }}</span>
-            <span class="sg-related-price">ابتداءً من {{ formatMoney(rp.priceFrom) }} د.ت</span>
-          </a>
-        </div>
-      </div>
-    </section>
+
   </div>
 </template>
 

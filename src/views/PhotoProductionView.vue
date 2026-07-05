@@ -165,71 +165,7 @@
       </div>
     </section>
 
-    <!-- ═══════════════ POURQUOI NOUS CHOISIR ═══════════════ -->
-    <section class="section why-us-section">
-      <div class="wrap">
-        <div class="section-head center">
-          <h2 class="sec-title">لماذا تختارنا؟</h2>
-        </div>
-        <div class="why-us-grid">
-          <div class="why-us-item" v-for="w in whyUs" :key="w">
-            <span class="why-us-check">✅</span>
-            <span>{{ w }}</span>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- ═══════════════ CTA ═══════════════ -->
-    <section class="section cta-simple-section">
-      <div class="wrap">
-        <div class="cta-simple">
-          <div class="cta-glow"></div>
-          <h3>جاهز لإبراز علامتك التجارية؟</h3>
-          <p>دعنا نساعدك في إنتاج صور احترافية تعكس جودة منتجاتك وخدماتك وتلفت انتباه عملائك.</p>
-          <div class="cta-actions">
-            <RouterLink to="/devis" class="btn-hero-gold">اطلب عرض سعر</RouterLink>
-            <RouterLink to="/contact" class="btn-hero-outline">تواصل معنا</RouterLink>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ═══════════════ FAQ ═══════════════ -->
-    <section class="section faq-section">
-      <div class="wrap">
-        <div class="section-head center">
-          <h2 class="sec-title">الأسئلة الشائعة</h2>
-        </div>
-        <div class="faq-list">
-          <div
-            class="faq-item"
-            v-for="(f, i) in faqs"
-            :key="f.q"
-            :class="{ open: openFaq === i }"
-            @click="openFaq = openFaq === i ? -1 : i"
-          >
-            <div class="faq-q">
-              <span>{{ f.q }}</span>
-              <span class="faq-toggle">{{ openFaq === i ? '−' : '+' }}</span>
-            </div>
-            <p class="faq-a" v-if="openFaq === i">{{ f.a }}</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ═══════════════ CONTACT INFO ═══════════════ -->
-    <section class="contact-info-section">
-      <div class="wrap contact-info-simple">
-        <h3 class="info-title">تواصل معنا</h3>
-        <div class="info-items">
-          <div class="info-item"><span class="info-icon">📍</span> طريق قابس كلم 1.5 مدنين، قبالة صيدلية كشو</div>
-          <div class="info-item"><span class="info-icon">📞</span> +216 92 105 505</div>
-          <div class="info-item"><span class="info-icon">✉️</span> contact@infinity-agency.com</div>
-        </div>
-      </div>
-    </section>
 
   </div>
 </template>

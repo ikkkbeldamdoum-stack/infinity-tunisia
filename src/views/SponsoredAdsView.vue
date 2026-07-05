@@ -1,4 +1,3 @@
-<!-- src/views/PaidAdsView.vue -->
 <template>
   <div dir="rtl" class="infinity-site">
 
@@ -13,8 +12,17 @@
       </div>
     </div>
 
-    <!-- ═══════════════ HERO ═══════════════ -->
+    <!-- ═══════════════ HERO AVEC VIDÉO EN FOND ═══════════════ -->
     <section class="hero">
+      <video
+        class="hero-video"
+        autoplay
+        muted
+        loop
+        playsinline
+        :src="heroVideo"
+      ></video>
+
       <div class="hero-overlay"></div>
       <div class="glow glow-1"></div>
       <div class="glow glow-2"></div>
@@ -82,7 +90,6 @@
               </li>
             </ul>
             
-            <!-- ═══ NOUVEAU BOUTON "احجز الآن" ═══ -->
             <div class="offer-action">
               <RouterLink :to="'/contact?pack=' + encodeURIComponent(o.packValue)" class="btn-book-now">
                 احجز الآن
@@ -92,7 +99,6 @@
           </div>
         </div>
 
-        <!-- ═══ FORMULE ET BOUTON DE NAVIGATION ═══ -->
         <div class="offer-formula">
           <p class="formula-title">يمكن إحتساب أسعار الحملات الخاصة من خلال الصيغة التالية</p>
           <div class="formula-line">
@@ -169,28 +175,6 @@
       </div>
     </section>
 
-    <!-- ═══════════════ RESULTATS ═══════════════ -->
-    <section class="section portfolio-section">
-      <div class="wrap">
-        <div class="section-head center">
-          <span class="sec-tag">نتائج حقيقية</span>
-          <h2 class="sec-title">نماذج من نتائج حملاتنا</h2>
-        </div>
-        <div class="results-grid">
-          <div class="result-card" v-for="r in results" :key="r.title">
-            <div class="result-thumb" :style="{ background: r.color }">
-              <span class="result-tag">{{ r.title }}</span>
-            </div>
-            <div class="result-stats">
-              <span class="stat-up">{{ r.up }}</span>
-              <span class="stat-down">{{ r.down }}</span>
-            </div>
-            <p class="result-caption">{{ r.caption }}</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- ═══════════════ STATS BAR ═══════════════ -->
     <section class="stats-bar-section">
       <div class="wrap">
@@ -223,7 +207,10 @@
 </template>
 
 <script setup>
-/* ═══ Données statiques ═══ */
+import { ref } from 'vue'
+
+// ═══ استيراد فيديو الهيرو ═══
+import heroVideo from '../assets/hero-video.mp4?url'
 
 /* ═══ Hero badges ═══ */
 const heroBadges = [
@@ -240,7 +227,6 @@ const offers = [
     price: '130',
     featured: false,
     priceLabel: 'الحملة',
-    // ═══ Nouveau champ pour le pré-remplissage du formulaire ═══
     packValue: '7 أيام - 130 DT',
     icon: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>`,
     features: [
@@ -257,7 +243,6 @@ const offers = [
     price: '250',
     featured: true,
     priceLabel: null,
-    // ═══ Nouveau champ pour le pré-remplissage du formulaire ═══
     packValue: '14 يوم - 250 DT',
     icon: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
     features: [
@@ -274,7 +259,6 @@ const offers = [
     price: '590',
     featured: false,
     priceLabel: null,
-    // ═══ Nouveau champ pour le pré-remplissage du formulaire ═══
     packValue: '30 يوم - 590 DT',
     icon: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 3h12l4 6-10 12L2 9z"/><path d="M11 3 8 9l4 12 4-12-3-6"/><path d="M2 9h20"/></svg>`,
     features: [
@@ -369,14 +353,6 @@ const platforms = [
   }
 ]
 
-/* ═══ Résultats de campagnes ═══ */
-const results = [
-  { title: 'مطعم', caption: 'زيادة في الطلبات وخفض في تكلفة الطلب', up: '+320%', down: '-45%', color: 'linear-gradient(135deg,#8a3a1e,#c96a2f)' },
-  { title: 'متجر إلكتروني', caption: 'زيادة في المبيعات وعائد على الاستثمار', up: '+280%', down: '+165%', color: 'linear-gradient(135deg,#0f2745,#1e4a7a)' },
-  { title: 'عيادة تجميل', caption: 'زيادة في الحجوزات وخفض تكلفة الحجز', up: '+180%', down: '-30%', color: 'linear-gradient(135deg,#5c2140,#8a3a63)' },
-  { title: 'شركة خدمات', caption: 'زيادة في العملاء وخفض تكلفة العميل', up: '+210%', down: '-40%', color: 'linear-gradient(135deg,#1a2430,#2d3e50)' }
-]
-
 /* ═══ Stats bar ═══ */
 const stats = [
   { value: '+250', label: 'حملة إعلانية', icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>` },
@@ -419,18 +395,37 @@ const stats = [
 .breadcrumb a:hover { color: var(--gold); }
 .breadcrumb .current { color: var(--gold); font-weight: 700; }
 
-/* ═══ HERO ═══ */
+/* ═══ HERO AVEC VIDÉO ═══ */
 .hero {
   position: relative;
   min-height: 88vh;
   display: flex;
   align-items: center;
   overflow: hidden;
-  background: linear-gradient(135deg, #0c1230, #070b1e);
   padding: 70px 0 80px;
 }
-.hero-overlay { position: absolute; inset: 0; z-index: 1; background: radial-gradient(900px 460px at 82% -8%, rgba(248,177,1,0.16), transparent 60%); }
-.glow { position: absolute; border-radius: 50%; filter: blur(120px); pointer-events: none; z-index: 2; }
+.hero-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: rgba(12, 18, 48, 0.65);
+}
+.glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+  z-index: 2;
+}
 .glow-1 { width: 500px; height: 500px; top: -100px; right: -50px; background: rgba(248, 177, 1, 0.16); }
 .glow-2 { width: 300px; height: 300px; bottom: 0; left: -50px; background: rgba(248, 177, 1, 0.1); }
 
@@ -501,7 +496,6 @@ const stats = [
 .offer-features li { display: flex; align-items: center; gap: 10px; font-size: 13.5px; color: var(--text-light); }
 .offer-check { color: var(--gold); font-weight: 900; }
 
-/* ═══ NOUVEAU CSS BOUTON "احجز الآن" ═══ */
 .offer-action { margin-top: 16px; }
 .btn-book-now {
   display: block;
@@ -534,8 +528,6 @@ const stats = [
 .formula-title { font-size: 15px; margin-bottom: 6px; color: #cfd4ec; }
 .formula-line { font-size: 16px; margin-bottom: 26px; color: #fff; }
 .formula-line strong { color: var(--gold); font-size: 19px; }
-
-/* ═══ BOUTON DE NAVIGATION POUR LA CALCULATRICE ═══ */
 .calc-navigate-btn { display: flex; justify-content: center; margin-top: 24px; }
 .calc-navigate-btn .btn-hero-gold { padding: 16px 38px; font-size: 16px; }
 
@@ -578,20 +570,6 @@ const stats = [
 .platform-card p { font-size: 12.5px; color: var(--text-muted); line-height: 1.6; }
 @media (max-width: 1024px) { .platforms-grid { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 560px) { .platforms-grid { grid-template-columns: repeat(2, 1fr); } }
-
-/* ═══ RESULTS ═══ */
-.portfolio-section { background: var(--bg-panel); }
-.results-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-.result-card { background: #fff; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05); transition: transform 0.2s; }
-.result-card:hover { transform: translateY(-6px); }
-.result-thumb { height: 130px; display: flex; align-items: flex-end; padding: 14px; }
-.result-tag { background: rgba(0,0,0,0.4); padding: 6px 14px; border-radius: 8px; color: #fff; font-weight: 700; font-size: 14px; backdrop-filter: blur(2px); }
-.result-stats { display: flex; gap: 10px; padding: 14px 16px 4px; }
-.stat-up { color: #00a86b; font-weight: 800; font-size: 15px; }
-.stat-down { color: #e0392b; font-weight: 800; font-size: 15px; }
-.result-caption { padding: 4px 16px 18px; font-size: 12.5px; color: var(--text-muted); line-height: 1.6; }
-@media (max-width: 1024px) { .results-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 560px) { .results-grid { grid-template-columns: 1fr; } }
 
 /* ═══ STATS BAR ═══ */
 .stats-bar-section { background: #0c1230; padding: 46px 0; }

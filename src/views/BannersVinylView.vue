@@ -376,25 +376,6 @@
         </div>
       </div>
     </section>
-
-    <!-- ═══════════════ GABARITS / TEMPLATES ═══════════════ -->
-    <section class="bv-section bv-templates" id="templates">
-      <div class="wrap">
-        <h2>حمّل القالب الجاهز حسب مقاسك</h2>
-        <p class="bv-section-sub">قوالب جاهزة بمقاسات معيارية لبرامج التصميم، مع احتساب هوامش الأمان والقصّ.</p>
-        <div class="bv-templates-grid">
-          <div class="bv-template-card" v-for="f in templateFormats" :key="f.id">
-            <div class="bv-template-preview" :style="{ aspectRatio: f.ratio || '1 / 1.4' }"></div>
-            <span class="bv-template-name">{{ f.label }}</span>
-            <button type="button" class="bv-template-download">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              تحميل القالب
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- ═══════════════ COMMENT COMMANDER ═══════════════ -->
     <section class="bv-section bv-how-to-order" id="how-to-order">
       <div class="wrap">
@@ -449,19 +430,6 @@
       </div>
     </section>
 
-    <!-- ═══════════════ PRODUITS SIMILAIRES ═══════════════ -->
-    <section class="bv-section bv-related">
-      <div class="wrap">
-        <h2>منتجات ذات صلة</h2>
-        <div class="bv-related-grid">
-          <a v-for="rp in relatedProducts" :key="rp.slug" :href="rp.href" class="bv-related-card">
-            <div class="bv-related-thumb"></div>
-            <span class="bv-related-name">{{ rp.name }}</span>
-            <span class="bv-related-price">ابتداءً من {{ formatMoney(rp.priceFrom) }} د.ت</span>
-          </a>
-        </div>
-      </div>
-    </section>
   </div>
 </template>
 

@@ -123,8 +123,21 @@
           <h2 class="sec-title">ماذا نقدم لك؟</h2>
           <p class="sec-desc">حلول طباعة متكاملة تجمع بين الإبداع والدقة لتعزيز حضور علامتك التجارية</p>
         </div>
+
+        <div class="services-filters">
+          <button
+            v-for="cat in serviceCategories"
+            :key="cat"
+            class="filter-btn"
+            :class="{ active: activeServiceCategory === cat }"
+            @click="activeServiceCategory = cat"
+          >
+            {{ cat }}
+          </button>
+        </div>
+
         <div class="services-grid">
-          <div class="service-card" v-for="s in services" :key="s.label">
+          <div class="service-card" v-for="s in filteredServices" :key="s.slug">
             <div class="service-card-glow" :style="{ background: s.glow }"></div>
             <div class="service-icon">
               <img :src="s.image" :alt="s.label" loading="lazy" />
@@ -211,7 +224,7 @@
             v-for="item in filteredPortfolio"
             :key="item.title"
           >
-            <div class="portfolio-thumb" :style="{ background: item.color }">
+            <div class="portfolio-thumb" :style="{ backgroundImage: `url(${item.image})` }">
               <div class="portfolio-overlay">
                 <span class="portfolio-category">{{ item.category }}</span>
                 <span class="portfolio-tag">{{ item.title }}</span>
@@ -372,15 +385,61 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+
+// ═══════════════ IMPORTS DES IMAGES SERVICES ═══════════════
 import businessImg from '../assets/business.png'
 import flyerImg from '../assets/flyer.png'
 import brochureImg from '../assets/brochure.png'
 import rollupImg from '../assets/rollup.png'
 import bannerImg from '../assets/banner.png'
 import signImg from '../assets/sign.png'
+import catalogueImg from '../assets/cathalogue.png'
+import stickerImg from '../assets/sticker.png'
+import portAfficheImg from '../assets/portaffiche.png'
+import habillageVoitureImg from '../assets/habillagevoiture.png'
+import carnetFactureImg from '../assets/carnetfacture.png'
+import porteDocumentImg from '../assets/portedocument.png'
+import cachetImg from '../assets/cachet.png'
+import calendrierImg from '../assets/calendrier.png'
+import mugImg from '../assets/mug.png'
+import styloImg from '../assets/stylo.png'
+import porteCleImg from '../assets/portecle.png'
+import trophesImg from '../assets/trophés.png'
+import nfcImg from '../assets/nfc.png'
+import bachImg from '../assets/bach.png'
+
+// ═══════════════ IMPORTS DES IMAGES PORTFOLIO ═══════════════
+// Noms EXACTS de vos fichiers (d'après l'image)
+
+// Fonction pour importer les images
+function getImageUrl(name) {
+  return new URL(`../assets/printdesign/${name}`, import.meta.url).href
+}
+
+// Images avec les noms EXACTS
+const bannerShowroom = getImageUrl('banner-showroom-1.jpg')
+const bonDepense = getImageUrl('Bon-de-dépense.jpg')
+const casquette = getImageUrl('casquette.jpg')
+const gilet = getImageUrl('gilet-1.jpg')
+const menuA3Back = getImageUrl('menu-a3-back.jpg')
+const menuA3Face = getImageUrl('menu-a3-face.jpg')
+const mockup2Bleu = getImageUrl('mockup-2 BLEU.png')
+const mockup2 = getImageUrl('MOCKUP-2.jpg')
+const mockup2Marron = getImageUrl('mockup-2-MARRON.png')
+const mockup3 = getImageUrl('mockup-31.jpg')
+const mockup3Alt = getImageUrl('MOCKUP-3.jpg')
+const mockup4 = getImageUrl('mockup-4.jpg')
+const mockupAgenda1 = getImageUrl('mockup-agenda-1.jpg')
+const mockupAgenda2 = getImageUrl('mockup-agenda-2.jpg')
+const panneauDroit = getImageUrl('panneau-droite.png')
+const panneauGauche = getImageUrl('panneau-gauche.png')
+const porteDocumentPortfolio = getImageUrl('PORTE-DOCUMENT.jpg')
+const recuj = getImageUrl('recu.jpg')
+const tenue = getImageUrl('TENUE.png')
+const veste = getImageUrl('veste-1-m.jpg')
 
 /* ═══════════════════════════════════════════════════════════
-   ICÔNES — Hero (badges du bas + chips flottantes)
+   ICÔNES — Hero
 ═══════════════════════════════════════════════════════════ */
 const icons = {
   checkBadge: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l2.39 1.94 3.02-.44 1.02 2.9 2.9 1.02-.44 3.02L23 12l-1.94 2.39.44 3.02-2.9 1.02-1.02 2.9-3.02-.44L12 23l-2.39-1.94-3.02.44-1.02-2.9-2.9-1.02.44-3.02L1 12l1.94-2.39-.44-3.02 2.9-1.02 1.02-2.9 3.02.44z"/><polyline points="9 12 11 14 15 10"/></svg>`,
@@ -409,18 +468,28 @@ const statItems = [
 ]
 
 /* ═══════════════════════════════════════════════════════════
-   SERVICES — fond transparent pour toutes les images
+   SERVICES
 ═══════════════════════════════════════════════════════════ */
 const services = [
   {
     slug: 'business-cards',
+    category: 'بطاقات وأوراق',
     label: 'بطاقات الأعمال',
     desc: 'تصميم وطباعة بطاقات احترافية بجميع أنواع الورق مع إمكانية إضافة تقنية NFC.',
     image: businessImg,
     glow: 'radial-gradient(circle, rgba(248,177,1,0.18), transparent 70%)'
   },
   {
+    slug: 'cartes-nfc',
+    category: 'بطاقات وأوراق',
+    label: 'بطاقات NFC',
+    desc: 'بطاقات ذكية بتقنية NFC لمشاركة معلوماتك المهنية بلمسة واحدة.',
+    image: nfcImg,
+    glow: 'radial-gradient(circle, rgba(66,133,244,0.16), transparent 70%)'
+  },
+  {
     slug: 'flyers',
+    category: 'إشهار مطبوع',
     label: 'المطويات (Flyers)',
     desc: 'مطويات دعائية بجودة عالية ومقاسات متعددة تناسب مختلف الحملات الإعلانية.',
     image: flyerImg,
@@ -428,13 +497,39 @@ const services = [
   },
   {
     slug: 'brochures',
+    category: 'إشهار مطبوع',
     label: 'البروشورات',
     desc: 'تصميم احترافي وطباعة فاخرة تعكس هوية علامتك التجارية.',
     image: brochureImg,
     glow: 'radial-gradient(circle, rgba(214,41,118,0.14), transparent 70%)'
   },
   {
+    slug: 'catalogues',
+    category: 'إشهار مطبوع',
+    label: 'كتالوجات',
+    desc: 'كتالوجات منتجات بتجليد وصفحات داخلية عالية الجودة لعرض عروضك بشكل احترافي.',
+    image: catalogueImg,
+    glow: 'radial-gradient(circle, rgba(214,41,118,0.14), transparent 70%)'
+  },
+  {
+    slug: 'stickers-autocollants',
+    category: 'إشهار مطبوع',
+    label: 'ستيكرات وملصقات',
+    desc: 'ملصقات وستيكرات مقصوصة بالشكل المطلوب، بخامات مقاومة للماء والاحتكاك.',
+    image: stickerImg,
+    glow: 'radial-gradient(circle, rgba(66,133,244,0.16), transparent 70%)'
+  },
+  {
+    slug: 'porte-affiches',
+    category: 'إشهار مطبوع',
+    label: 'حوامل الملصقات',
+    desc: 'حوامل ملصقات أنيقة لعرض إعلاناتك داخل المحلات ونقاط البيع.',
+    image: portAfficheImg,
+    glow: 'radial-gradient(circle, rgba(17,17,17,0.10), transparent 70%)'
+  },
+  {
     slug: 'rollup',
+    category: 'عرض ومعارض',
     label: 'رول أب (Roll Up)',
     desc: 'ستاندات رول أب عالية الجودة سهلة النقل والتركيب.',
     image: rollupImg,
@@ -442,19 +537,109 @@ const services = [
   },
   {
     slug: 'banners-vinyl',
+    category: 'عرض ومعارض',
     label: 'اللافتات والفينيل',
     desc: 'طباعة لافتات وفينيل بمختلف الأحجام والخامات للاستخدام الداخلي والخارجي.',
     image: bannerImg,
     glow: 'radial-gradient(circle, rgba(66,133,244,0.16), transparent 70%)'
   },
   {
+    slug: 'baches-publicitaires',
+    category: 'عرض ومعارض',
+    label: 'بافانات إشهارية (Bâches)',
+    desc: 'بافانات كبيرة الحجم للواجهات والفعاليات، بخامة مقاومة للعوامل الجوية.',
+    image: bachImg,
+    glow: 'radial-gradient(circle, rgba(66,133,244,0.16), transparent 70%)'
+  },
+  {
     slug: 'signage',
+    category: 'عرض ومعارض',
     label: 'اللوحات والإشارات',
     desc: 'تصميم وتنفيذ اللوحات المضيئة، ولوحات المحلات، والإشارات التجارية باحترافية.',
     image: signImg,
     glow: 'radial-gradient(circle, rgba(255,0,0,0.10), transparent 70%)'
+  },
+  {
+    slug: 'habillage-vehicules',
+    category: 'عرض ومعارض',
+    label: 'تلبيس السيارات',
+    desc: 'تغليف وتلبيس السيارات بالفينيل الإعلاني لتحويل أسطولك إلى وسيلة إشهار متحركة.',
+    image: habillageVoitureImg,
+    glow: 'radial-gradient(circle, rgba(255,0,0,0.10), transparent 70%)'
+  },
+  {
+    slug: 'carnets-factures',
+    category: 'قرطاسية إدارية',
+    label: 'كرانيه الفواتير',
+    desc: 'كرانيه فواتير مرقمة وجاهزة للاستخدام اليومي في نشاطك التجاري.',
+    image: carnetFactureImg,
+    glow: 'radial-gradient(circle, rgba(248,177,1,0.18), transparent 70%)'
+  },
+  {
+    slug: 'porte-documents',
+    category: 'قرطاسية إدارية',
+    label: 'حافظات المستندات',
+    desc: 'حافظات مستندات مطبوعة بشعارك، مثالية لتسليم العروض والملفات الإدارية.',
+    image: porteDocumentImg,
+    glow: 'radial-gradient(circle, rgba(248,177,1,0.18), transparent 70%)'
+  },
+  {
+    slug: 'cachets-professionnels',
+    category: 'قرطاسية إدارية',
+    label: 'الأختام المهنية',
+    desc: 'أختام مطاطية احترافية لختم الفواتير والمستندات الرسمية بسرعة ودقة.',
+    image: cachetImg,
+    glow: 'radial-gradient(circle, rgba(17,17,17,0.10), transparent 70%)'
+  },
+  {
+    slug: 'calendriers',
+    category: 'هدايا وغوديز',
+    label: 'التقاويم الإشهارية',
+    desc: 'تقاويم مكتبية أو حائطية مخصصة تبقي علامتك حاضرة طوال السنة.',
+    image: calendrierImg,
+    glow: 'radial-gradient(circle, rgba(214,41,118,0.14), transparent 70%)'
+  },
+  {
+    slug: 'mugs-personnalises',
+    category: 'هدايا وغوديز',
+    label: 'الأكواب المخصصة',
+    desc: 'أكواب وماغات مطبوعة بشعارك، هدية عملية ودائمة الحضور لعملائك وموظفيك.',
+    image: mugImg,
+    glow: 'radial-gradient(circle, rgba(214,41,118,0.14), transparent 70%)'
+  },
+  {
+    slug: 'stylos-publicitaires',
+    category: 'هدايا وغوديز',
+    label: 'الأقلام الإشهارية',
+    desc: 'أقلام مطبوعة بشعارك، من أكثر الهدايا الترويجية استخداماً وفعالية.',
+    image: styloImg,
+    glow: 'radial-gradient(circle, rgba(214,41,118,0.14), transparent 70%)'
+  },
+  {
+    slug: 'porte-cles',
+    category: 'هدايا وغوديز',
+    label: 'ميداليات المفاتيح',
+    desc: 'ميداليات مفاتيح مخصصة بأشكال وخامات متعددة كهدية ترويجية مميزة.',
+    image: porteCleImg,
+    glow: 'radial-gradient(circle, rgba(214,41,118,0.14), transparent 70%)'
+  },
+  {
+    slug: 'trophees',
+    category: 'هدايا وغوديز',
+    label: 'الدروع والجوائز',
+    desc: 'دروع وجوائز تكريمية مخصصة للمناسبات والفعاليات والتكريمات السنوية.',
+    image: trophesImg,
+    glow: 'radial-gradient(circle, rgba(255,0,0,0.10), transparent 70%)'
   }
 ]
+
+const serviceCategories = ['الكل', ...new Set(services.map((s) => s.category))]
+const activeServiceCategory = ref('الكل')
+const filteredServices = computed(() =>
+  activeServiceCategory.value === 'الكل'
+    ? services
+    : services.filter((s) => s.category === activeServiceCategory.value)
+)
 
 /* ═══════════════════════════════════════════════════════════
    WHY US
@@ -481,20 +666,107 @@ const processSteps = [
 ]
 
 /* ═══════════════════════════════════════════════════════════
-   PORTFOLIO — avec catégories filtrables
+   PORTFOLIO
 ═══════════════════════════════════════════════════════════ */
+
 const portfolio = [
-  { title: 'بطاقات أعمال فاخرة', category: 'بطاقات', color: 'linear-gradient(135deg,#0f2745,#1e4a7a)' },
-  { title: 'بروشور شركة عقارية', category: 'بروشورات', color: 'linear-gradient(135deg,#5c2140,#8a3a63)' },
-  { title: 'رول أب معرض تجاري', category: 'رول أب', color: 'linear-gradient(135deg,#1a2430,#2d3e50)' },
-  { title: 'لوحة إعلانية طريق', category: 'لوحات', color: 'linear-gradient(135deg,#8a3a1e,#c96a2f)' },
-  { title: 'لوحة محل مضيئة', category: 'لوحات', color: 'linear-gradient(135deg,#2d3e50,#4a6b8a)' },
-  { title: 'استيكرات أسطول سيارات', category: 'فينيل', color: 'linear-gradient(135deg,#0c1230,#1e3a5f)' },
-  { title: 'فينيل واجهة محل', category: 'فينيل', color: 'linear-gradient(135deg,#111111,#333333)' },
-  { title: 'مطوية حملة تسويقية', category: 'مطويات', color: 'linear-gradient(135deg,#3a6b4a,#5a8a6a)' }
+  { 
+    title: 'بانر عرض المتجر', 
+    category: 'لافتات', 
+    image: bannerShowroom
+  },
+  { 
+    title: 'بطاقة أعمال فاخرة', 
+    category: 'بطاقات', 
+    image: bonDepense
+  },
+  { 
+    title: 'بطاقة تعريفية مميزة', 
+    category: 'بطاقات', 
+    image: recuj
+  },
+  { 
+    title: 'قائمة طعام - الوجه الأمامي', 
+    category: 'مطويات', 
+    image: menuA3Face
+  },
+  { 
+    title: 'قائمة طعام - الوجه الخلفي', 
+    category: 'مطويات', 
+    image: menuA3Back
+  },
+  { 
+    title: 'موكب تصميم إعلاني', 
+    category: 'موكبات', 
+    image: mockup2
+  },
+  { 
+    title: 'موكب تصميم - أزرق', 
+    category: 'موكبات', 
+    image: mockup2Bleu
+  },
+  { 
+    title: 'موكب تصميم - بني', 
+    category: 'موكبات', 
+    image: mockup2Marron
+  },
+  { 
+    title: 'موكب تصميم 3', 
+    category: 'موكبات', 
+    image: mockup3
+  },
+  { 
+    title: 'موكب تصميم 3 - بديل', 
+    category: 'موكبات', 
+    image: mockup3Alt
+  },
+  { 
+    title: 'موكب تصميم 4', 
+    category: 'موكبات', 
+    image: mockup4
+  },
+  { 
+    title: 'أجندة مخصصة 1', 
+    category: 'أجندات', 
+    image: mockupAgenda1
+  },
+  { 
+    title: 'أجندة مخصصة 2', 
+    category: 'أجندات', 
+    image: mockupAgenda2
+  },
+  { 
+    title: 'حافظة مستندات احترافية', 
+    category: 'قرطاسية', 
+    image: porteDocumentPortfolio
+  },
+  { 
+    title: 'قبعة رياضية مخصصة', 
+    category: 'ملابس', 
+    image: casquette
+  },
+  { 
+    title: 'سترة رياضية احترافية', 
+    category: 'ملابس', 
+    image: veste
+  },
+  { 
+    title: 'سترة موحدة', 
+    category: 'ملابس', 
+    image: gilet
+  },
+  { 
+    title: 'الزي الموحد للموظفين', 
+    category: 'ملابس', 
+    image: tenue
+  }
 ]
-const portfolioCategories = ['الكل', 'بطاقات', 'بروشورات', 'رول أب', 'لوحات', 'فينيل', 'مطويات']
+
+// Catégories uniques
+const portfolioCategories = ['الكل', ...new Set(portfolio.map(p => p.category))]
 const activeCategory = ref('الكل')
+
+// Portfolio filtré
 const filteredPortfolio = computed(() =>
   activeCategory.value === 'الكل'
     ? portfolio
@@ -551,7 +823,6 @@ const openFaq = ref(0)
 const quickQuote = ref({ name: '', phone: '', service: '' })
 const quickQuoteSent = ref(false)
 function submitQuickQuote() {
-  // TODO: brancher sur votre API / service d'envoi d'e-mail (ex: EmailJS, backend Laravel, etc.)
   quickQuoteSent.value = true
   quickQuote.value = { name: '', phone: '', service: '' }
   setTimeout(() => { quickQuoteSent.value = false }, 5000)
@@ -561,9 +832,6 @@ function submitQuickQuote() {
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Tajawal:wght@400;600;700;800&display=swap');
 
-/* ═══════════════════════════════════════════════════════════
-   DESIGN TOKENS
-═══════════════════════════════════════════════════════════ */
 .infinity-site {
   --gold: #f8b101;
   --gold-light: #ffd04b;
@@ -602,9 +870,7 @@ function submitQuickQuote() {
 .sec-title { font-size: clamp(28px, 3vw, 40px); font-weight: 800; color: var(--text); margin-bottom: 14px; letter-spacing: -0.3px; }
 .sec-desc { font-size: 16px; color: var(--text-muted); max-width: 620px; margin: 0 auto; line-height: 1.8; }
 
-/* ═══════════════════════════════════════════════════════════
-   BREADCRUMB
-═══════════════════════════════════════════════════════════ */
+/* BREADCRUMB */
 .breadcrumb { background: var(--bg-panel); padding: 14px 0; border-bottom: 1px solid var(--border); }
 .breadcrumb .wrap { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-muted); }
 .breadcrumb a { color: var(--text-light); text-decoration: none; transition: color 0.2s ease; }
@@ -612,9 +878,7 @@ function submitQuickQuote() {
 .breadcrumb .sep { opacity: 0.5; }
 .breadcrumb .current { color: var(--gold); font-weight: 700; }
 
-/* ═══════════════════════════════════════════════════════════
-   HERO
-═══════════════════════════════════════════════════════════ */
+/* HERO */
 .hero {
   position: relative;
   min-height: 88vh;
@@ -732,9 +996,7 @@ function submitQuickQuote() {
   .hero { background-attachment: scroll; }
 }
 
-/* ═══════════════════════════════════════════════════════════
-   STATS BAND
-═══════════════════════════════════════════════════════════ */
+/* STATS BAND */
 .stats-band { background: var(--navy); padding: 40px 0; position: relative; z-index: 4; margin-top: -2px; }
 .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
 .stat-item { display: flex; align-items: center; gap: 14px; justify-content: center; color: #fff; }
@@ -743,9 +1005,7 @@ function submitQuickQuote() {
 .stat-item span { font-size: 12.5px; color: #aab0c8; }
 @media (max-width: 900px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
 
-/* ═══════════════════════════════════════════════════════════
-   SERVICES — IMAGES AGRANDIES (120px)
-═══════════════════════════════════════════════════════════ */
+/* SERVICES */
 .services-section { background: #f9fafb; position: relative; overflow: hidden; }
 .services-section::before {
   content: ''; position: absolute; inset: 0;
@@ -754,6 +1014,7 @@ function submitQuickQuote() {
     radial-gradient(circle at 80% 20%, rgba(30, 60, 114, 0.04) 0%, transparent 50%);
   pointer-events: none;
 }
+.services-filters { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 40px; position: relative; z-index: 1; }
 .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; position: relative; z-index: 1; }
 
 .service-card {
@@ -770,11 +1031,11 @@ function submitQuickQuote() {
 
 .service-icon {
   width: 100%;
-  height: 250px; /* Augmentation de la hauteur du conteneur (était à 220px) */
+  height: 250px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 25px 20px 15px; /* Ajustement du padding pour bien centrer */
+  padding: 25px 20px 15px;
   background: transparent;
   transition: transform 0.4s ease;
   position: relative;
@@ -782,13 +1043,13 @@ function submitQuickQuote() {
 }
 .service-card:hover .service-icon { transform: scale(1.04); }
 .service-icon img {
-  width: 100%; /* Prend toute la largeur disponible */
-  max-width: 200px; /* Taille maximale de l'image (plus grande !) */
-  max-height: 180px; /* Taille maximale en hauteur pour rester harmonieux */
+  width: 100%;
+  max-width: 200px;
+  max-height: 180px;
   object-fit: contain;
   background: transparent;
   mix-blend-mode: multiply;
-  filter: drop-shadow(0 8px 15px rgba(0,0,0,0.1)); /* Ombre plus prononcée */
+  filter: drop-shadow(0 8px 15px rgba(0,0,0,0.1));
   transition: transform 0.4s ease;
 }
 .service-card:hover .service-icon img { transform: scale(1.12); }
@@ -813,17 +1074,15 @@ function submitQuickQuote() {
 @media (max-width: 900px) {
   .services-grid { grid-template-columns: repeat(2, 1fr); }
   .service-icon { height: 190px; }
-  .service-icon img { width: 105px; height: 105px; }
+  .service-icon img { max-width: 150px; max-height: 140px; }
 }
 @media (max-width: 560px) {
   .services-grid { grid-template-columns: 1fr; }
   .service-icon { height: 180px; }
-  .service-icon img { width: 100px; height: 100px; }
+  .service-icon img { max-width: 130px; max-height: 120px; }
 }
 
-/* ═══════════════════════════════════════════════════════════
-   WHY US
-═══════════════════════════════════════════════════════════ */
+/* WHY US */
 .why-section { background: var(--bg-panel); position: relative; overflow: hidden; }
 .why-bg-shape { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.5; pointer-events: none; }
 .shape-1 { width: 320px; height: 320px; background: rgba(248,177,1,0.08); top: -100px; left: -80px; }
@@ -844,9 +1103,7 @@ function submitQuickQuote() {
 @media (max-width: 900px) { .why-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 560px) { .why-grid { grid-template-columns: 1fr; } }
 
-/* ═══════════════════════════════════════════════════════════
-   PROCESS
-═══════════════════════════════════════════════════════════ */
+/* PROCESS */
 .process-section { background: var(--bg); }
 .process-track { position: relative; display: grid; grid-template-columns: repeat(6, 1fr); gap: 20px; }
 .process-line { position: absolute; top: 26px; left: 5%; right: 5%; height: 2px; background: repeating-linear-gradient(to right, var(--gold) 0 8px, transparent 8px 16px); z-index: 0; opacity: 0.4; }
@@ -864,40 +1121,135 @@ function submitQuickQuote() {
 @media (max-width: 900px) { .process-track { grid-template-columns: repeat(3, 1fr); } .process-line, .process-line-fill { display: none; } }
 @media (max-width: 560px) { .process-track { grid-template-columns: repeat(2, 1fr); } }
 
-/* ═══════════════════════════════════════════════════════════
-   PORTFOLIO
-═══════════════════════════════════════════════════════════ */
-.portfolio-section { background: var(--bg-panel); }
+/* PORTFOLIO */
+.portfolio-section { background: var(--bg-panel); padding: 90px 0; }
 .portfolio-filters { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 40px; }
+
 .filter-btn {
-  padding: 9px 20px; border-radius: 50px; border: 1px solid var(--border); background: #fff;
-  color: var(--text-light); font-size: 13.5px; font-weight: 700; cursor: pointer; transition: all 0.25s var(--ease);
+  padding: 9px 24px; 
+  border-radius: 50px; 
+  border: 1px solid var(--border); 
+  background: #fff;
+  color: var(--text-light); 
+  font-size: 13.5px; 
+  font-weight: 700; 
+  cursor: pointer; 
+  transition: all 0.25s var(--ease);
+  font-family: 'Cairo', sans-serif;
 }
-.filter-btn:hover { border-color: var(--gold); color: var(--gold); }
-.filter-btn.active { background: var(--gold); border-color: var(--gold); color: #1a1a1a; }
+.filter-btn:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+.filter-btn.active { background: var(--gold); border-color: var(--gold); color: #1a1a1a; box-shadow: 0 4px 15px rgba(248, 177, 1, 0.3); }
 
-.portfolio-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.portfolio-grid { 
+  display: grid; 
+  grid-template-columns: repeat(4, 1fr); 
+  gap: 20px; 
+}
+
+.portfolio-item {
+  position: relative;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s var(--ease);
+  aspect-ratio: 1 / 1;
+}
+.portfolio-item:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+}
+
 .portfolio-thumb {
-  border-radius: var(--radius-md); height: 200px; position: relative; overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08); transition: transform 0.3s var(--ease); cursor: pointer;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  transition: transform 0.5s var(--ease);
 }
-.portfolio-thumb:hover { transform: scale(1.03); }
-.portfolio-overlay {
-  position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end;
-  padding: 20px; background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 60%);
-  color: #fff; opacity: 0; transition: opacity 0.3s var(--ease);
+.portfolio-item:hover .portfolio-thumb {
+  transform: scale(1.05);
 }
-.portfolio-thumb:hover .portfolio-overlay { opacity: 1; }
-.portfolio-category { font-size: 11px; color: var(--gold); font-weight: 700; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
-.portfolio-tag { font-weight: 800; font-size: 15px; margin-bottom: 6px; }
-.portfolio-view { font-size: 12.5px; color: #d3d8ec; }
-.portfolio-actions { margin-top: 44px; text-align: center; }
-@media (max-width: 1024px) { .portfolio-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 560px) { .portfolio-grid { grid-template-columns: 1fr; } }
 
-/* ═══════════════════════════════════════════════════════════
-   CLIENTS STRIP
-═══════════════════════════════════════════════════════════ */
+.portfolio-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 24px 20px;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.85) 0%,
+    rgba(0, 0, 0, 0.3) 50%,
+    transparent 100%
+  );
+  color: #fff;
+  opacity: 0;
+  transition: all 0.4s var(--ease);
+}
+.portfolio-item:hover .portfolio-overlay {
+  opacity: 1;
+}
+
+.portfolio-category {
+  font-size: 11px;
+  color: var(--gold);
+  font-weight: 700;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transform: translateY(10px);
+  transition: transform 0.4s var(--ease);
+}
+.portfolio-item:hover .portfolio-category {
+  transform: translateY(0);
+}
+
+.portfolio-tag {
+  font-weight: 800;
+  font-size: 15px;
+  margin-bottom: 8px;
+  transform: translateY(10px);
+  transition: transform 0.4s var(--ease) 0.05s;
+}
+.portfolio-item:hover .portfolio-tag {
+  transform: translateY(0);
+}
+
+.portfolio-view {
+  font-size: 12.5px;
+  color: rgba(255, 255, 255, 0.7);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transform: translateY(10px);
+  transition: all 0.4s var(--ease) 0.1s;
+}
+.portfolio-item:hover .portfolio-view {
+  transform: translateY(0);
+  color: var(--gold);
+}
+
+.portfolio-actions { margin-top: 48px; text-align: center; }
+
+@media (max-width: 1200px) {
+  .portfolio-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 992px) {
+  .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 576px) {
+  .portfolio-section { padding: 60px 0; }
+  .portfolio-grid { grid-template-columns: 1fr; gap: 16px; }
+  .portfolio-item { aspect-ratio: 4 / 3; }
+  .portfolio-filters { gap: 8px; }
+  .filter-btn { padding: 7px 16px; font-size: 12px; }
+  .portfolio-actions { margin-top: 32px; }
+}
+
+/* CLIENTS */
 .clients-section { background: var(--bg); padding: 50px 0 60px; border-bottom: 1px solid var(--border); }
 .clients-label { text-align: center; font-size: 13.5px; color: var(--text-muted); font-weight: 700; margin-bottom: 26px; letter-spacing: 0.3px; }
 .clients-track { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; }
@@ -907,9 +1259,7 @@ function submitQuickQuote() {
 }
 .client-chip:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); background: #fff; }
 
-/* ═══════════════════════════════════════════════════════════
-   TESTIMONIALS
-═══════════════════════════════════════════════════════════ */
+/* TESTIMONIALS */
 .testimonials-section { background: var(--bg); }
 .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
 .testimonial-card {
@@ -928,9 +1278,7 @@ function submitQuickQuote() {
 .testimonial-author small { font-size: 12px; color: var(--text-muted); }
 @media (max-width: 900px) { .testimonials-grid { grid-template-columns: 1fr; } }
 
-/* ═══════════════════════════════════════════════════════════
-   FEATURES
-═══════════════════════════════════════════════════════════ */
+/* FEATURES */
 .features-section { background: var(--bg-panel); }
 .features-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
 .feature-item {
@@ -945,9 +1293,7 @@ function submitQuickQuote() {
 @media (max-width: 900px) { .features-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 560px) { .features-grid { grid-template-columns: 1fr; } }
 
-/* ═══════════════════════════════════════════════════════════
-   CTA
-═══════════════════════════════════════════════════════════ */
+/* CTA */
 .cta-simple-section { background: var(--bg); }
 .cta-simple {
   position: relative; overflow: hidden; background: linear-gradient(135deg, #fff8e6, #fffaf0);
@@ -975,14 +1321,11 @@ function submitQuickQuote() {
   transition: all 0.25s var(--ease);
 }
 .qq-field input:focus, .qq-field select:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(248,177,1,0.15); }
-.qq-field input:disabled { background: var(--bg-panel); color: var(--text-muted); }
 .qq-submit { flex: 1 1 160px; border: none; }
 .qq-hint { position: relative; z-index: 1; color: #16a34a; font-weight: 700; font-size: 14px; margin: 0 0 20px; }
 @media (max-width: 640px) { .quick-quote-form { flex-direction: column; } }
 
-/* ═══════════════════════════════════════════════════════════
-   FAQ
-═══════════════════════════════════════════════════════════ */
+/* FAQ */
 .faq-section { background: var(--bg-panel); }
 .faq-list { max-width: 800px; margin: 0 auto; background: #fff; border-radius: var(--radius-md); border: 1px solid var(--border); overflow: hidden; }
 .faq-item { border-bottom: 1px solid var(--border); padding: 22px 26px; cursor: pointer; transition: background 0.2s ease; }
@@ -995,9 +1338,7 @@ function submitQuickQuote() {
 .faq-expand-enter-from, .faq-expand-leave-to { max-height: 0; opacity: 0; margin-top: 0; }
 .faq-expand-enter-to, .faq-expand-leave-from { max-height: 200px; opacity: 1; }
 
-/* ═══════════════════════════════════════════════════════════
-   CONTACT INFO
-═══════════════════════════════════════════════════════════ */
+/* CONTACT */
 .contact-info-section { background: var(--bg); padding: 70px 0; }
 .contact-info-simple { max-width: 640px; margin: 0 auto; text-align: center; }
 .info-title { font-size: 22px; font-weight: 800; color: var(--text); margin-bottom: 30px; }
