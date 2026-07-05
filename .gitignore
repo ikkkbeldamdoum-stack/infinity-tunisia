@@ -3,3 +3,5 @@ dist
 .DS_Store
 *.local
 src/assets/video/*.mp4 
+"src/assets/printdesign/panneau-droite.png" 
+"src/assets/printdesign/panneau-gauche.png" 
