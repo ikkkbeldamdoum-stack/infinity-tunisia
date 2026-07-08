@@ -84,16 +84,17 @@
         </div>
         <div class="packs-grid">
           <div class="pack-card" v-for="(p, index) in packs" :key="p.title">
-            <!-- Image de l'offre -->
-            <div class="pack-image">
-              <img :src="p.image" :alt="p.title" />
+            <div class="pack-icon-wrapper">
+              <span class="pack-emoji">{{ p.emoji }}</span>
             </div>
             <h3 class="pack-name">{{ p.title }}</h3>
             <p class="pack-price">{{ p.price }}</p>
             <ul class="pack-features">
               <li v-for="f in p.features" :key="f">{{ f }}</li>
             </ul>
-            <RouterLink :to="{ name: 'contact', query: { pack: p.title + ' - ' + p.price } }" class="btn-hero-gold full-width">اطلب هذا العرض</RouterLink>
+            <button @click="handlePhotoClick(p.title, p.price)" class="btn-hero-gold full-width">
+              اطلب هذا العرض
+            </button>
           </div>
         </div>
       </div>
@@ -157,21 +158,120 @@
           <h2 class="sec-title">معداتنا</h2>
         </div>
         <div class="equip-grid">
-<div class="equip-item" v-for="e in equip" :key="e.label">
-  <span class="equip-emoji"><img :src="e.image" :alt="e.label" /></span>
-  <span>{{ e.label }}</span>
-</div>
+          <div class="equip-item" v-for="e in equip" :key="e.label">
+            <span class="equip-emoji">{{ e.emoji }}</span>
+            <span>{{ e.label }}</span>
+          </div>
         </div>
       </div>
     </section>
 
+    <!-- ═══════════════ POURQUOI NOUS CHOISIR ? ═══════════════ -->
+    <section class="section why-us-section">
+      <div class="wrap">
+        <div class="section-head center">
+          <span class="sec-tag">Pourquoi nous ?</span>
+          <h2 class="sec-title">لماذا نحن؟</h2>
+          <p class="sec-desc">نحن نضمن لك تجربة تصوير احترافية وفريدة من نوعها</p>
+        </div>
+        <div class="why-us-grid">
+          <div class="why-us-item" v-for="item in whyUs" :key="item">
+            <span class="why-us-check">✓</span>
+            <span>{{ item }}</span>
+          </div>
+        </div>
+      </div>
+    </section>
 
+    <!-- ═══════════════ CTA SECTION ═══════════════ -->
+    <section class="section cta-simple-section">
+      <div class="wrap">
+        <div class="cta-simple">
+          <div class="cta-glow"></div>
+          <h3>جاهز لرفع مستوى تصويرك؟</h3>
+          <p>تواصل معنا اليوم للحصول على عرض سعر مخصص لاحتياجاتك</p>
+          <div class="cta-actions">
+            <RouterLink to="/devis" class="btn-hero-gold">اطلب عرض سعر</RouterLink>
+            <RouterLink to="/contact" class="btn-hero-outline">تواصل معنا</RouterLink>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════ FAQ ═══════════════ -->
+    <section class="section faq-section">
+      <div class="wrap">
+        <div class="section-head center">
+          <span class="sec-tag">FAQ</span>
+          <h2 class="sec-title">الأسئلة الشائعة</h2>
+        </div>
+        <div class="faq-list">
+          <div
+            class="faq-item"
+            v-for="(f, i) in faqs"
+            :key="f.q"
+            @click="openFaq = openFaq === i ? -1 : i"
+          >
+            <div class="faq-q">
+              <span>{{ f.q }}</span>
+              <span class="faq-toggle">{{ openFaq === i ? '−' : '+' }}</span>
+            </div>
+            <p class="faq-a" v-if="openFaq === i">{{ f.a }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════ CONTACT INFO ═══════════════ -->
+    <section class="section contact-info-section">
+      <div class="wrap">
+        <div class="contact-info-simple">
+          <h3 class="info-title">تفاصيل الاتصال</h3>
+          <div class="info-items">
+            <div class="info-item">
+              <span class="info-icon">📍</span>
+              <span>طريق قابس، كم 1.5، مدنين، أمام صيدلية كشو</span>
+            </div>
+            <div class="info-item">
+              <span class="info-icon">📞</span>
+              <span dir="ltr">+216 92 105 505</span>
+            </div>
+            <div class="info-item">
+              <span class="info-icon">✉️</span>
+              <span>contact@infinity-agency.com</span>
+            </div>
+            <div class="info-item">
+              <span class="info-icon">🌐</span>
+              <span>www.infinity-agency.tn</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAdminStorage } from '../composables/useAdminStorage'
+
+const router = useRouter()
+const { saveMessage } = useAdminStorage()
+
+// ═══ Fonction pour gérer les clics sur les packs ═══
+function handlePhotoClick(packName, price) {
+  saveMessage({
+    name: 'Visiteur site',
+    email: '',
+    phone: '',
+    pack: `${packName} - ${price}`,
+    message: `Demande d'information pour le pack photo : ${packName}`,
+    source: 'photo-production'
+  })
+  router.push({ name: 'contact', query: { pack: packName } })
+}
 
 /* ═══ Hero badges ═══ */
 const heroBadges = [
@@ -200,36 +300,36 @@ const processSteps = [
   { num: '05', title: 'التسليم', desc: 'تسليم الصور بجودة عالية وفي الموعد المحدد.', icon: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>` }
 ]
 
-/* ═══ Packs (modifiés avec images) ═══ */
+/* ═══ Packs — basé sur l'image fournie ═══ */
 const packs = [
   {
     title: 'جلسة تصوير لمدة ساعتين',
     price: 'ابتداءً من 190 د.ت',
-    image: '../assets/photo-session-2h.png', // ← image personnalisée
+    emoji: '⏱️',
     features: ['تصوير احترافي', 'تعديل ومعالجة الصور', 'تسليم جميع الصور', 'من 25 إلى 40 صورة']
   },
   {
     title: 'جلسة تصوير لمدة 4 ساعات',
     price: 'ابتداءً من 300 د.ت',
-    image: '../assets/photo-session-4h.png',
+    emoji: '📸',
     features: ['تصوير احترافي', 'تعديل احترافي للصور', 'تسليم جميع الصور', 'من 60 إلى 100 صورة']
   },
   {
     title: 'تصوير المنتجات',
     price: 'ابتداءً من 120 د.ت',
-    image: '../assets/photo-product.png',
+    emoji: '📦',
     features: ['صور عالية الجودة', 'خلفيات متنوعة', 'إضاءة احترافية', 'معالجة كاملة للصور']
   },
   {
-    title: 'تصوير المطاعم والمقاهي',
+    title: 'تصوير الطعام',
     price: 'ابتداءً من 200 د.ت',
-    image: '../assets/photo-restaurant.png',
+    emoji: '🍽️',
     features: ['تصوير الأطباق والمشروبات', 'تصوير الأجواء الداخلية', 'إضاءة احترافية', 'تعديل احترافي للصور']
   },
   {
     title: 'تغطية الفعاليات',
     price: 'ابتداءً من 800 د.ت',
-    image: '../assets/photo-event.png',
+    emoji: '🎪',
     features: ['تغطية كاملة للفعاليات', 'تصوير احترافي للحدث', 'معالجة وتعديل الصور', 'تسليم بجودة عالية']
   }
 ]
@@ -255,12 +355,13 @@ const stats = [
 
 /* ═══ Equipement ═══ */
 const equip = [
-  { image: '../assets/equip-camera.png', label: 'كاميرات احترافية' },
-  { image: '../assets/equip-lens.png', label: 'عدسات عالية الدقة' },
-  { image: '../assets/equip-lighting.png', label: 'إضاءة احترافية' },
-  { image: '../assets/equip-drone.png', label: 'تصوير جوي بالطائرات بدون طيار (Drone)' },
-  { image: '../assets/equip-stabilizer.png', label: 'مثبتات وجيمبال احترافية' }
+  { emoji: '📷', label: 'كاميرات احترافية' },
+  { emoji: '🔭', label: 'عدسات عالية الدقة' },
+  { emoji: '💡', label: 'إضاءة احترافية' },
+  { emoji: '🛸', label: 'تصوير جوي بالطائرات بدون طيار (Drone)' },
+  { emoji: '⚙️', label: 'مثبتات وجيمبال احترافية' }
 ]
+
 /* ═══ Why us ═══ */
 const whyUs = [
   'معدات تصوير حديثة',
@@ -385,21 +486,26 @@ const openFaq = ref(0)
 .packs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
 .pack-card { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 40px 30px; text-align: center; transition: all 0.3s ease; display: flex; flex-direction: column; }
 .pack-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.08); border-color: var(--gold); }
-/* Image de l'offre */
-.pack-image {
-  width: 80px;
-  height: 80px;
-  margin: 0 auto 18px;
-  border-radius: 16px;
-  overflow: hidden;
-  border: 2px solid rgba(248,177,1,0.25);
+
+.pack-icon-wrapper {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  background: #fef3c7;
+  border: 2px solid rgba(248,177,1,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  transition: all 0.3s ease;
 }
-.pack-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
+.pack-card:hover .pack-icon-wrapper {
+  transform: scale(1.08);
+  box-shadow: 0 8px 16px rgba(248,177,1,0.25);
+  border-color: var(--gold);
 }
+
 .pack-name { font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 10px; }
 .pack-price { font-size: 28px; font-weight: 800; color: var(--gold); margin-bottom: 30px; }
 .pack-features { list-style: none; padding: 0; text-align: right; margin-bottom: 30px; flex: 1; }
@@ -431,13 +537,13 @@ const openFaq = ref(0)
 .equip-section { background: var(--bg); }
 .equip-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
 .equip-item { display: flex; align-items: center; gap: 12px; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 12px; padding: 16px 24px; font-size: 15px; color: var(--text-light); }
-.equip-emoji { font-size: 24px; }
+.equip-emoji { font-size: 28px; }
 
 /* ═══ WHY US ═══ */
 .why-us-section { background: var(--bg-panel); }
 .why-us-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
 .why-us-item { display: flex; align-items: center; gap: 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; font-size: 15px; color: var(--text-light); }
-.why-us-check { color: var(--gold); font-size: 18px; }
+.why-us-check { color: var(--gold); font-size: 18px; font-weight: 800; }
 @media (max-width: 768px) { .why-us-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 480px) { .why-us-grid { grid-template-columns: 1fr; } }
 
@@ -465,10 +571,4 @@ const openFaq = ref(0)
 .info-items { display: flex; flex-direction: column; align-items: center; gap: 18px; }
 .info-item { display: flex; align-items: center; gap: 12px; font-size: 15.5px; color: var(--text-light); }
 .info-icon { font-size: 20px; }
-.equip-emoji img {
-  width: 36px;
-  height: 36px;
-  object-fit: contain;
-  display: block;
-}
 </style>

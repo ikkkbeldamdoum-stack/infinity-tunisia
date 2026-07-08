@@ -1,0 +1,12 @@
+{
+  "maven.terminal.customEnv": [
+    {
+      "environmentVariable": "VITE_ADMIN_EMAIL",
+      "value": "admin@infinity-agency.com"
+    },
+    {
+      "environmentVariable": "VITE_ADMIN_PASSWORD",
+      "value": "admin123"
+    }
+  ]
+}

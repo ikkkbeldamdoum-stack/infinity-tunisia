@@ -1,4 +1,4 @@
-<!-- src/views/DevisView.vue -->
+<!-- src/views/Devis.vue -->
 <template>
   <main class="devis-page">
 
@@ -334,6 +334,9 @@
 
 <script setup>
 import { reactive, ref, computed } from 'vue'
+import { useAdminStorage } from '../composables/useAdminStorage'
+
+const { saveMessage, saveClient, saveProjet } = useAdminStorage()
 
 /* ═══ Étapes ═══ */
 const steps = [
@@ -352,12 +355,10 @@ const heroBadges = [
   { title: 'حلول مخصصة', label: 'تناسب احتياجاتك', icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>` }
 ]
 
-/* ═══ SERVICES (incluant les nouveaux produits d'impression) ═══ */
-// Icônes génériques – vous pouvez les remplacer par des SVG plus spécifiques
+/* ═══ SERVICES ═══ */
 const defaultIcon = `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="2" width="20" height="20" rx="2" /><path d="M8 8h8M8 12h6M8 16h4"/></svg>`
 
 const services = [
-  // Services existants
   { value: 'social', label: 'إدارة صفحات التواصل الإجتماعي', icon: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="4" width="16" height="16" rx="3"/><circle cx="12" cy="10" r="2.5"/><path d="M7 18c1-2.5 3-3.5 5-3.5s4 1 5 3.5"/></svg>` },
   { value: 'design', label: 'التصميم الجرافيكي والهوية البصرية', icon: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>` },
   { value: 'video', label: 'إنتاج الفيديو', icon: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="6" width="14" height="12" rx="2"/><polygon points="16 10 22 7 22 17 16 14"/></svg>` },
@@ -366,16 +367,12 @@ const services = [
   { value: 'web', label: 'تطوير المواقع والتطبيقات', icon: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="4" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="18" x2="12" y2="21"/></svg>` },
   { value: 'ads', label: 'الإعلانات الممولة', icon: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 11l18-7-7 18-3-8-8-3z"/></svg>` },
   { value: 'marketing', label: 'تسويق رقمي متكامل', icon: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/></svg>` },
-
-  // ═══ NOUVEAUX PRODUITS D'IMPRESSION ═══
   { value: 'cartes-visite', label: 'بطاقات الأعمال', icon: defaultIcon },
   { value: 'flyers', label: 'Flyers (مطويات)', icon: defaultIcon },
   { value: 'cartes-nfc', label: 'بطاقات NFC', icon: defaultIcon },
   { value: 'baches', label: 'بَاشات إعلانية', icon: defaultIcon },
   { value: 'carnets-factures', label: 'كشوفات الفواتير', icon: defaultIcon },
-  { value: 'carnets-autocopiants', label: 'كشوفات أتوكوبيانت', icon: defaultIcon },
   { value: 'porte-documents', label: 'مجلدات وحافظات', icon: defaultIcon },
-  { value: 'carnets-tickets', label: 'كشوفات التذاكر', icon: defaultIcon },
   { value: 'rollup', label: 'رول أب (Roll‑up)', icon: defaultIcon },
   { value: 'mugs', label: 'أكواب مخصصة', icon: defaultIcon },
   { value: 'stylos', label: 'أقلام إعلانية', icon: defaultIcon },
@@ -387,7 +384,6 @@ const services = [
   { value: 'porte-affiches', label: 'حاملات الملصقات', icon: defaultIcon },
   { value: 'habillage-vehicules', label: 'تغليف المركبات', icon: defaultIcon },
   { value: 'cachets', label: 'أختام مهنية', icon: defaultIcon },
-
   { value: 'autre', label: 'أخرى (حدد لاحقًا)', icon: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>` }
 ]
 
@@ -406,7 +402,6 @@ const projectTypes = [
   'مشروع مستمر شهريًا'
 ]
 
-/* ═══ Formulaire ═══ */
 const form = reactive({
   services: [],
   serviceOther: '',
@@ -431,7 +426,6 @@ const selectedServiceLabels = computed(() =>
   })
 )
 
-/* ═══ Validation par étape ═══ */
 const canProceed = computed(() => {
   if (currentStep.value === 1) return form.services.length > 0
   if (currentStep.value === 3) return form.name.trim() !== '' && form.phone.trim() !== ''
@@ -443,20 +437,66 @@ const nextStep = () => {
   if (currentStep.value < 4) currentStep.value++
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
+
 const prevStep = () => {
   if (currentStep.value > 1) currentStep.value--
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
 const submitted = ref(false)
+
 function handleSubmit() {
   if (!canProceed.value) return
-  // Connexion API / webhook à insérer ici
+  
+  // ═══ SAUVEGARDE DANS L'ADMIN ═══
+  const servicesList = selectedServiceLabels.value.join(', ')
+  
+  // 1. Sauvegarder le message
+  saveMessage({
+    name: form.name,
+    email: form.email || '',
+    phone: form.phone,
+    company: form.company || '',
+    pack: servicesList,
+    message: `
+      Projet: ${form.projectName || ''}
+      Type: ${form.projectType || ''}
+      Budget: ${form.budget || ''}
+      Date souhaitée: ${form.deadline || ''}
+      ${form.shortDesc ? 'Description: ' + form.shortDesc : ''}
+      ${form.goals ? 'Objectifs: ' + form.goals : ''}
+      ${form.message ? 'Notes: ' + form.message : ''}
+    `.trim(),
+    source: 'devis'
+  })
+
+  // 2. Sauvegarder le client
+  saveClient({
+    name: form.name,
+    email: form.email || '',
+    phone: form.phone,
+    company: form.company || '',
+    services: servicesList,
+    notes: form.message || '',
+    source: 'devis'
+  })
+
+  // 3. Sauvegarder le projet
+  if (form.projectName) {
+    saveProjet({
+      name: form.projectName,
+      client: form.name,
+      service: servicesList,
+      status: 'en-attente',
+      description: form.shortDesc || '',
+      budget: form.budget || '',
+      deadline: form.deadline || ''
+    })
+  }
+
   submitted.value = true
 }
 </script>
-
-
 
 <style scoped>
 /* ═══════════ FONDATIONS ═══════════ */
@@ -483,7 +523,6 @@ function handleSubmit() {
 }
 .wrap { max-width: 1240px; margin: 0 auto; padding: 0 24px; }
 
-/* ═══════════ HERO ═══════════ */
 .hero-devis {
   padding: 60px 0;
   position: relative;
@@ -541,7 +580,6 @@ function handleSubmit() {
 .glow-ring { position: absolute; width: 220px; height: 220px; border: 2px dashed rgba(248,177,1,0.35); border-radius: 50%; animation: spin-slow 25s linear infinite; }
 .glow-ring-small { position: absolute; width: 160px; height: 160px; border: 2px dashed rgba(248,177,1,0.2); border-radius: 50%; animation: spin-slow 18s linear infinite reverse; }
 
-/* ═══════════ STEP INDICATOR ═══════════ */
 .steps-nav { padding: 46px 0 10px; background: var(--paper); }
 .steps-track { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); }
 .steps-line { position: absolute; top: 19px; left: 12%; right: 12%; height: 2px; background: var(--border); z-index: 0; }
@@ -560,12 +598,10 @@ function handleSubmit() {
 .step-node.active .step-label { color: var(--ink); }
 @media (max-width: 700px) { .step-label { display: none; } }
 
-/* ═══════════ STEP HEAD ═══════════ */
 .step-head { display: flex; align-items: center; gap: 16px; justify-content: center; margin-bottom: 30px; }
 .step-head h2 { font-size: 22px; font-weight: 800; white-space: nowrap; }
 .step-dash { flex: 1; height: 1px; background: var(--border); max-width: 100px; }
 
-/* ═══════════ FORM GRID ═══════════ */
 .form-section { padding: 40px 0 80px; }
 .form-grid {
   display: grid;
@@ -603,7 +639,6 @@ select, input, textarea {
 input:focus, textarea:focus, select:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 4px rgba(248,177,1,0.1); background: #fff; }
 .field-other { margin-top: 14px; }
 
-/* ═══ SERVICES GRID ═══ */
 .services-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-bottom: 20px; }
 .service-choice {
   position: relative;
@@ -632,14 +667,12 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: var(--g
 }
 .info-note-icon { color: var(--gold-deep); font-size: 15px; }
 
-/* ═══ REVIEW ═══ */
 .review-list { display: flex; flex-direction: column; gap: 20px; margin-bottom: 10px; }
 .review-block { background: var(--paper); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 20px 22px; }
 .review-block h4 { font-size: 14.5px; font-weight: 800; color: var(--gold-deep); margin-bottom: 10px; }
 .review-block p { font-size: 14px; color: var(--ink-light); line-height: 1.8; }
 .review-block p.muted { color: var(--grey-light); }
 
-/* ═══ NAVIGATION BOUTONS ═══ */
 .step-nav-buttons { display: flex; justify-content: space-between; align-items: center; margin-top: 30px; }
 .btn { display: inline-flex; align-items: center; gap: 10px; border: none; cursor: pointer; font-family: inherit; }
 .btn-back {
@@ -658,7 +691,6 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: var(--g
 .btn-submit:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 16px 36px rgba(248,177,1,0.5); }
 .btn-submit:disabled { opacity: 0.45; cursor: not-allowed; box-shadow: none; }
 
-/* SUCCESS */
 .success-card {
   background: var(--ink); color: #fff; border-radius: var(--radius);
   padding: 56px 40px; text-align: center; max-width: 600px; margin: 0 auto;
@@ -677,7 +709,6 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: var(--g
 }
 .btn-gold:hover { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(248,177,1,0.4); }
 
-/* ═══════════ SIDE INFO ═══════════ */
 .side-info { display: flex; flex-direction: column; gap: 20px; position: sticky; top: 100px; }
 .info-card { border-radius: var(--radius); padding: 28px 26px; transition: transform 0.3s; }
 .info-card:hover { transform: translateY(-4px); }
@@ -710,7 +741,6 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: var(--g
 }
 .btn-ghost:hover { background: #fff; border-color: var(--gold); }
 
-/* ═══════════ ANIMATIONS ═══════════ */
 @keyframes float-up { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
 @keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 .fade-enter-active, .fade-leave-active { transition: opacity 0.3s, transform 0.3s; }
@@ -719,7 +749,6 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: var(--g
 .step-fade-enter-from { opacity: 0; transform: translateX(-12px); }
 .step-fade-leave-to { opacity: 0; transform: translateX(12px); }
 
-/* ═══════════ RESPONSIVE ═══════════ */
 @media (max-width: 960px) {
   .hero-grid { grid-template-columns: 1fr; text-align: center; }
   .hero-visual { height: 180px; }

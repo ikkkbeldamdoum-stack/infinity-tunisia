@@ -276,10 +276,17 @@
           <input type="email" v-model="contact.email" placeholder="البريد الإلكتروني" />
           <textarea v-model="contact.notes" placeholder="ملاحظات إضافية (مثل: التصميم، التركيب، العنوان...)" rows="2"></textarea>
         </div>
-        <button type="button" class="btn-gold bv-order-submit" @click="submitOrder" :disabled="!canOrder">
-          <span v-if="orderSent">✅ تم إرسال طلبك، سنتواصل معك قريباً</span>
+        <button type="button" class="btn-gold bv-order-submit" @click="submitOrder" :disabled="!canOrder || loading">
+          <span v-if="loading">
+            <svg class="spinner" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10" stroke-dasharray="30" stroke-dashoffset="20"/>
+            </svg>
+            جاري الإرسال...
+          </span>
+          <span v-else-if="orderSent || success">✅ تم إرسال طلبك، سنتواصل معك قريباً</span>
           <span v-else>تأكيد الطلب — {{ formatMoney(estimatedPrice) }} د.ت</span>
         </button>
+        <p v-if="error" class="error-message">{{ error }}</p>
       </div>
     </div>
 
@@ -376,6 +383,7 @@
         </div>
       </div>
     </section>
+
     <!-- ═══════════════ COMMENT COMMANDER ═══════════════ -->
     <section class="bv-section bv-how-to-order" id="how-to-order">
       <div class="wrap">
@@ -435,6 +443,8 @@
 
 <script setup>
 import { ref, reactive, computed } from 'vue'
+import { useProductAdmin } from '../composables/useProductAdmin'
+import { PRODUCT_CATEGORIES } from '../data/productCategories'
 
 /* ═══════════════════════════════════════════════════════════
    DONNÉES PRODUIT
@@ -447,6 +457,14 @@ const gallery = [
 ]
 const activeImage = ref(0)
 
+/* ═══════════════════════════════════════════════════════════
+   ADMIN — Connexion à l'administration
+═══════════════════════════════════════════════════════════ */
+const { submitQuote, loading, error, success } = useProductAdmin(PRODUCT_CATEGORIES.BANNER_VINYL)
+
+/* ═══════════════════════════════════════════════════════════
+   CONFIGURATION DU PRODUIT
+═══════════════════════════════════════════════════════════ */
 const formats = [
   { id: '60x40', label: '60×40 سم', ratio: '1 / 0.67' },
   { id: '90x60', label: '90×60 سم', ratio: '1 / 0.67' },
@@ -624,10 +642,11 @@ function scrollToId(id) {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   FORMULAIRE DE COMMANDE
+   FORMULAIRE DE COMMANDE — connecté à l'admin
 ═══════════════════════════════════════════════════════════ */
 const contact = reactive({ name: '', phone: '', email: '', notes: '' })
 const orderSent = ref(false)
+
 const canOrder = computed(() =>
   !!selection.format &&
   !!selection.material &&
@@ -638,10 +657,51 @@ const canOrder = computed(() =>
   !!contact.email
 )
 
-function submitOrder() {
+/* Libellés lisibles pour la sélection courante */
+const formatLabel = computed(() => {
+  if (selection.format === 'custom') {
+    return `مقاس مخصص (${customWidth.value}×${customHeight.value} سم)`
+  }
+  return formats.find((f) => f.id === selection.format)?.label || '-'
+})
+
+const materialLabel = computed(() => materials.find((m) => m.id === selection.material)?.label || '-')
+const surfaceLabel = computed(() => surfaces.find((s) => s.id === selection.surface)?.label || '-')
+
+const optionsLabel = computed(() => {
+  const labels = (selection.options || []).map((oid) => options.find((o) => o.id === oid)?.label).filter(Boolean)
+  return labels.length ? labels.join('، ') : 'بدون خيارات إضافية'
+})
+
+async function submitOrder() {
   if (!canOrder.value) return
-  orderSent.value = true
-  setTimeout(() => (orderSent.value = false), 5000)
+
+  const result = await submitQuote({
+    name: contact.name,
+    phone: contact.phone,
+    email: contact.email,
+    message: contact.notes || 'Demande de devis pour l\'impression de bannières et vinyle',
+    options: {
+      format: formatLabel.value,
+      material: materialLabel.value,
+      surface: surfaceLabel.value,
+      options: optionsLabel.value,
+      quantity: selection.quantity,
+      estimatedPrice: estimatedPrice.value,
+      delivery: estimatedDeliveryLabel.value,
+      notes: contact.notes
+    },
+    price: estimatedPrice.value,
+    quantity: selection.quantity
+  })
+
+  if (result.success) {
+    orderSent.value = true
+    // Réinitialiser après 5 secondes
+    setTimeout(() => {
+      orderSent.value = false
+    }, 5000)
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -858,6 +918,23 @@ const relatedProducts = [
 .btn-gold:disabled { opacity: 0.5; cursor: not-allowed; }
 .arrow { transition: transform 0.25s var(--ease); }
 .bv-cta:hover .arrow { transform: translateX(-4px); }
+
+/* Spinner et message d'erreur */
+.error-message {
+  color: #e74c3c;
+  font-size: 13px;
+  margin-top: 8px;
+  text-align: center;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
 
 /* Sections génériques */
 .bv-section { padding: 56px 0; border-top: 1px solid var(--border); }

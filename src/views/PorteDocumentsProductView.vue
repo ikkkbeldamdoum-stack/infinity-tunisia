@@ -112,7 +112,49 @@
         </div>
       </div>
     </section>
+    <!-- ═══════════════ TARIFS ═══════════════ -->
+    <section class="section pricing-section">
+      <div class="wrap">
+        <div class="section-head center">
+          <span class="sec-tag">الأسعار</span>
+          <h2 class="sec-title">باقات حافظات المستندات</h2>
+          <p class="sec-desc">أسعار تنافسية مع إمكانية تخصيص الكمية والمواصفات</p>
+        </div>
 
+        <div class="pricing-grid">
+          <div class="pricing-card" v-for="plan in pricingPlans" :key="plan.name">
+            <div class="plan-header">
+              <h3>{{ plan.name }}</h3>
+              <p>{{ plan.size }}</p>
+            </div>
+            <div class="plan-price">
+              <span class="price-amount">{{ plan.price }}</span>
+              <span class="price-currency">د.ت</span>
+              <span class="price-unit">/ للوحدة</span>
+            </div>
+            <ul class="plan-features">
+              <li v-for="feat in plan.features" :key="feat">
+                <span class="plan-check">✓</span>
+                <span>{{ feat }}</span>
+              </li>
+            </ul>
+            <RouterLink 
+              :to="{ 
+                name: 'contact', 
+                query: { 
+                  pack: 'حافظات المستندات',
+                  message: `طلب ${plan.name} - ${plan.size} - السعر: ${plan.price} د.ت`
+                } 
+              }" 
+              class="btn-hero-gold plan-btn"
+            >
+              اطلب الآن
+              <span class="btn-arrow">←</span>
+            </RouterLink>
+          </div>
+        </div>
+      </div>
+    </section>
     <!-- ═══════════════ TYPES DE PORTE-DOCUMENTS ═══════════════ -->
     <section class="section services-section">
       <div class="wrap">
@@ -168,49 +210,7 @@
       </div>
     </section>
 
-    <!-- ═══════════════ TARIFS ═══════════════ -->
-    <section class="section pricing-section">
-      <div class="wrap">
-        <div class="section-head center">
-          <span class="sec-tag">الأسعار</span>
-          <h2 class="sec-title">باقات حافظات المستندات</h2>
-          <p class="sec-desc">أسعار تنافسية مع إمكانية تخصيص الكمية والمواصفات</p>
-        </div>
 
-        <div class="pricing-grid">
-          <div class="pricing-card" v-for="plan in pricingPlans" :key="plan.name">
-            <div class="plan-header">
-              <h3>{{ plan.name }}</h3>
-              <p>{{ plan.size }}</p>
-            </div>
-            <div class="plan-price">
-              <span class="price-amount">{{ plan.price }}</span>
-              <span class="price-currency">د.ت</span>
-              <span class="price-unit">/ للوحدة</span>
-            </div>
-            <ul class="plan-features">
-              <li v-for="feat in plan.features" :key="feat">
-                <span class="plan-check">✓</span>
-                <span>{{ feat }}</span>
-              </li>
-            </ul>
-            <RouterLink 
-              :to="{ 
-                name: 'contact', 
-                query: { 
-                  pack: 'حافظات المستندات',
-                  message: `طلب ${plan.name} - ${plan.size} - السعر: ${plan.price} د.ت`
-                } 
-              }" 
-              class="btn-hero-gold plan-btn"
-            >
-              اطلب الآن
-              <span class="btn-arrow">←</span>
-            </RouterLink>
-          </div>
-        </div>
-      </div>
-    </section>
 
 </div>
 </template>

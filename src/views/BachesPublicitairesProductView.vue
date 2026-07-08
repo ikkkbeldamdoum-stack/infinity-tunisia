@@ -111,7 +111,49 @@
         </div>
       </div>
     </section>
+ <!-- ═══════════════ TARIFS ═══════════════ -->
+    <section class="section pricing-section">
+      <div class="wrap">
+        <div class="section-head center">
+          <span class="sec-tag">الأسعار</span>
+          <h2 class="sec-title">باقات البافانات الإشهارية</h2>
+          <p class="sec-desc">أسعار تنافسية مع إمكانية تخصيص المقاس والخامة حسب طلبك</p>
+        </div>
 
+        <div class="pricing-grid">
+          <div class="pricing-card" v-for="plan in pricingPlans" :key="plan.name">
+            <div class="plan-header">
+              <h3>{{ plan.name }}</h3>
+              <p>{{ plan.size }}</p>
+            </div>
+            <div class="plan-price">
+              <span class="price-amount">{{ plan.price }}</span>
+              <span class="price-currency">د.ت</span>
+              <span class="price-unit">/ للمتر المربع</span>
+            </div>
+            <ul class="plan-features">
+              <li v-for="feat in plan.features" :key="feat">
+                <span class="plan-check">✓</span>
+                <span>{{ feat }}</span>
+              </li>
+            </ul>
+            <RouterLink 
+              :to="{ 
+                name: 'contact', 
+                query: { 
+                  pack: 'بافانات إشهارية',
+                  message: `طلب ${plan.name} - ${plan.size} - السعر: ${plan.price} د.ت/م²`
+                } 
+              }" 
+              class="btn-hero-gold plan-btn"
+            >
+              اطلب الآن
+              <span class="btn-arrow">←</span>
+            </RouterLink>
+          </div>
+        </div>
+      </div>
+    </section>
     <!-- ═══════════════ TYPES DE BÂCHES ═══════════════ -->
     <section class="section services-section">
       <div class="wrap">
@@ -167,49 +209,7 @@
       </div>
     </section>
 
-    <!-- ═══════════════ TARIFS ═══════════════ -->
-    <section class="section pricing-section">
-      <div class="wrap">
-        <div class="section-head center">
-          <span class="sec-tag">الأسعار</span>
-          <h2 class="sec-title">باقات البافانات الإشهارية</h2>
-          <p class="sec-desc">أسعار تنافسية مع إمكانية تخصيص المقاس والخامة حسب طلبك</p>
-        </div>
-
-        <div class="pricing-grid">
-          <div class="pricing-card" v-for="plan in pricingPlans" :key="plan.name">
-            <div class="plan-header">
-              <h3>{{ plan.name }}</h3>
-              <p>{{ plan.size }}</p>
-            </div>
-            <div class="plan-price">
-              <span class="price-amount">{{ plan.price }}</span>
-              <span class="price-currency">د.ت</span>
-              <span class="price-unit">/ للمتر المربع</span>
-            </div>
-            <ul class="plan-features">
-              <li v-for="feat in plan.features" :key="feat">
-                <span class="plan-check">✓</span>
-                <span>{{ feat }}</span>
-              </li>
-            </ul>
-            <RouterLink 
-              :to="{ 
-                name: 'contact', 
-                query: { 
-                  pack: 'بافانات إشهارية',
-                  message: `طلب ${plan.name} - ${plan.size} - السعر: ${plan.price} د.ت/م²`
-                } 
-              }" 
-              class="btn-hero-gold plan-btn"
-            >
-              اطلب الآن
-              <span class="btn-arrow">←</span>
-            </RouterLink>
-          </div>
-        </div>
-      </div>
-    </section>
+   
 
     <!-- ═══════════════ AVANTAGES ═══════════════ -->
     <section class="section features-section">
@@ -229,7 +229,38 @@
       </div>
     </section>
 
-  
+    <!-- ═══════════════ CTA + DEMANDE DE DEVIS RAPIDE ═══════════════ -->
+    <section class="section cta-simple-section">
+      <div class="wrap">
+        <div class="cta-simple">
+          <div class="cta-glow"></div>
+          <div class="cta-glow cta-glow-2"></div>
+          <div class="cta-pattern"></div>
+          <h3>احصل على عرض سعر لبافانك الإشهاري الآن</h3>
+          <p>املأ النموذج أدناه وسنتواصل معك في أقرب وقت لدراسة طلبك</p>
+
+          <form class="quick-quote-form" @submit.prevent="submitQuickQuote">
+            <div class="qq-field">
+              <input type="text" v-model="quickQuote.name" placeholder="الاسم الكامل" required />
+            </div>
+            <div class="qq-field">
+              <input type="tel" v-model="quickQuote.phone" placeholder="رقم الهاتف" required />
+            </div>
+            <div class="qq-field">
+              <select v-model="quickQuote.type" required>
+                <option value="" disabled>نوع البافان</option>
+                <option v-for="plan in pricingPlans" :key="plan.name" :value="plan.name">{{ plan.name }}</option>
+              </select>
+            </div>
+            <button type="submit" class="btn-hero-gold qq-submit">
+              اطلب عرض السعر
+              <span class="btn-arrow">←</span>
+            </button>
+          </form>
+          <p v-if="quickQuoteSent" class="qq-hint">✅ تم إرسال طلبك بنجاح، سنتواصل معك قريباً</p>
+        </div>
+      </div>
+    </section>
 
   </div>
 </template>
@@ -375,7 +406,40 @@ const openFaq = ref(0)
 /* ═══════════════ FORMULAIRE RAPIDE ═══════════════ */
 const quickQuote = ref({ name: '', phone: '', type: '' })
 const quickQuoteSent = ref(false)
+
 function submitQuickQuote() {
+  if (!quickQuote.value.name || !quickQuote.value.phone || !quickQuote.value.type) return
+
+  // Récupère le plan choisi (le cas échéant) pour l'afficher côté admin
+  const chosenPlan = pricingPlans.find(p => p.name === quickQuote.value.type)
+
+  const order = {
+    id: Date.now(),
+    product: `بافانات إشهارية - ${quickQuote.value.type}`,
+    name: quickQuote.value.name,
+    phone: quickQuote.value.phone,
+    date: new Date().toISOString(),
+    status: 'pending',
+    estimatedPrice: chosenPlan ? Number(chosenPlan.price) : null,
+    details: [
+      { label: 'الخدمة', value: 'بافانات إشهارية' },
+      { label: 'نوع البافان', value: quickQuote.value.type },
+      { label: 'المقاس', value: chosenPlan ? chosenPlan.size : '-' },
+      { label: 'الاسم الكامل', value: quickQuote.value.name },
+      { label: 'رقم الهاتف', value: quickQuote.value.phone }
+    ]
+  }
+
+  // Enregistre dans le même stockage que celui lu par CommandesAdmin.vue
+  const existing = JSON.parse(localStorage.getItem('infinity_commandes') || '[]')
+  const updated = [...existing, order]
+  localStorage.setItem('infinity_commandes', JSON.stringify(updated))
+
+  // Notifie l'admin (si déjà ouvert dans un autre onglet) en temps réel
+  window.dispatchEvent(new CustomEvent('admin-data-updated', {
+    detail: { key: 'infinity_commandes', data: updated }
+  }))
+
   quickQuoteSent.value = true
   quickQuote.value = { name: '', phone: '', type: '' }
   setTimeout(() => { quickQuoteSent.value = false }, 5000)

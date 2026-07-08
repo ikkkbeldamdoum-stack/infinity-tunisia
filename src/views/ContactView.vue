@@ -126,14 +126,12 @@
                 <div class="float-group">
                   <select id="pack" v-model="form.pack">
                     <option value="" disabled selected>اختر الباقة...</option>
-                    
                     <optgroup label="بطاقات NFC الذكية">
                       <option value="nfc-standard-1">بطاقة NFC أساسية - بطاقة واحدة - 75 د.ت</option>
                       <option value="nfc-standard-2">بطاقة NFC أساسية - بطاقتين - 125 د.ت</option>
                       <option value="nfc-premium-1">بطاقة NFC مميزة - بطاقة واحدة - 220 د.ت</option>
                       <option value="nfc-premium-2">بطاقة NFC مميزة - بطاقتين - 270 د.ت</option>
                     </optgroup>
-                    
                     <optgroup label="الطباعة والدعاية">
                       <option value="بطاقات الأعمال">بطاقات الأعمال</option>
                       <option value="المطويات (Flyers)">المطويات (Flyers)</option>
@@ -159,7 +157,6 @@
                       <option value="الدروع والجوائز">الدروع والجوائز</option>
                       <option value="حوامل الملصقات">حوامل الملصقات</option>
                     </optgroup>
-                    
                     <optgroup label="التصميم والهوية">
                       <option value="تصميم منشور">تصميم منشور - 40 DT</option>
                       <option value="باقة 10 منشورات">باقة 10 منشورات - 300 DT</option>
@@ -169,7 +166,6 @@
                       <option value="Logo Design">Logo Design - 120 DT</option>
                       <option value="الهوية البصرية">الهوية البصرية - 300 DT</option>
                     </optgroup>
-                    
                     <optgroup label="تطوير مواقع">
                       <option value="Landing Page">Landing Page - ابتداءً من 750 د.ت</option>
                       <option value="Site Vitrine">Site Vitrine - ابتداءً من 1500 د.ت</option>
@@ -177,13 +173,11 @@
                       <option value="نظام الحجز">نظام الحجز الإلكتروني - حسب المشروع</option>
                       <option value="صيانة ودعم فني">الصيانة والدعم الفني - 200 د.ت شهريًا</option>
                     </optgroup>
-                    
                     <optgroup label="التسويق الرقمي">
                       <option value="BUSINESS">BUSINESS - 990 DT</option>
                       <option value="PREMIUM">PREMIUM - 750 DT</option>
                       <option value="STARTER">STARTER - 390 DT</option>
                     </optgroup>
-                    
                     <optgroup label="الفيديو">
                       <option value="مونتاج الفيديو">مونتاج الفيديو - 120 DT</option>
                       <option value="تصوير الفيديو">تصوير الفيديو - 300 DT</option>
@@ -191,14 +185,12 @@
                       <option value="فيديو تعريفي">فيديو تعريفي - 150 DT</option>
                       <option value="تغطية الفعاليات">تغطية الفعاليات - 900 DT</option>
                     </optgroup>
-                    
                     <optgroup label="الإعلانات الممولة">
                       <option value="7 أيام - 130 DT">7 أيام - 130 DT</option>
                       <option value="14 يوم - 250 DT">14 يوم - 250 DT</option>
                       <option value="30 يوم - 590 DT">30 يوم - 590 DT</option>
                       <option value="حملة مخصصة">حملة مخصصة (حسب الحاسبة)</option>
                     </optgroup>
-                    
                     <optgroup label="التصوير الفوتوغرافي">
                       <option value="جلسة تصوير لمدة ساعتين - ابتداءً من 190 د.ت">جلسة تصوير لمدة ساعتين - ابتداءً من 190 د.ت</option>
                       <option value="جلسة تصوير لمدة 4 ساعات - ابتداءً من 300 د.ت">جلسة تصوير لمدة 4 ساعات - ابتداءً من 300 د.ت</option>
@@ -235,8 +227,10 @@
 <script setup>
 import { reactive, ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+import { useAdminStorage } from '../composables/useAdminStorage'
 
 const route = useRoute()
+const { saveMessage, saveClient } = useAdminStorage()
 
 // ═══════════════ WILAYAS ═══════════════
 const allWilayas = [
@@ -287,26 +281,18 @@ const formRef = ref(null)
 
 // Liste de tous les packs pour la correspondance URL
 const allPacks = [
-  // NFC
   'nfc-standard-1', 'nfc-standard-2', 'nfc-premium-1', 'nfc-premium-2',
-  // Print
   'بطاقات الأعمال', 'المطويات (Flyers)', 'البروشورات', 'رول أب (Roll Up)',
   'اللافتات والفينيل', 'اللوحات والإشارات', 'استيكرات السيارات', 'واجهات المحلات',
   'الطباعة الدعائية', 'الملصقات (Stickers)', 'الكتالوجات', 'البانرات الإعلانية',
   'بافانات إشهارية', 'تلبيس السيارات', 'كرانيه الفواتير', 'حافظات المستندات',
   'الأختام المهنية', 'التقاويم الإشهارية', 'الأكواب المخصصة', 'الأقلام الإشهارية',
   'ميداليات المفاتيح', 'الدروع والجوائز', 'حوامل الملصقات',
-  // Design
   'تصميم منشور', 'باقة 10 منشورات', 'Flyer', 'Catalogue PDF', 'Menu Restaurant', 'Logo Design', 'الهوية البصرية',
-  // Web
   'Landing Page', 'Site Vitrine', 'E-Commerce', 'نظام الحجز', 'صيانة ودعم فني',
-  // Marketing
   'BUSINESS', 'PREMIUM', 'STARTER',
-  // Vidéo
   'مونتاج الفيديو', 'تصوير الفيديو', 'تصوير + مونتاج', 'فيديو تعريفي', 'تغطية الفعاليات',
-  // Ads
   '7 أيام - 130 DT', '14 يوم - 250 DT', '30 يوم - 590 DT', 'حملة مخصصة',
-  // Photo
   'جلسة تصوير لمدة ساعتين - ابتداءً من 190 د.ت',
   'جلسة تصوير لمدة 4 ساعات - ابتداءً من 300 د.ت',
   'تصوير المنتجات - ابتداءً من 120 د.ت',
@@ -315,34 +301,25 @@ const allPacks = [
 ]
 
 onMounted(() => {
-  // ═══ GESTION DES PARAMÈTRES URL ═══
   const service = route.query.service
   const quantite = route.query.quantite
   const prix = route.query.prix
   const pack = route.query.pack
   const message = route.query.message
 
-  // 1. Paramètres NFC (depuis CarteNfcPricingModern)
   if (service === 'nfc-standard') {
     form.pack = quantite === '2' ? 'nfc-standard-2' : 'nfc-standard-1'
     form.message = `طلب بطاقة NFC - الباقة الأساسية - ${quantite === '2' ? 'بطاقتين' : 'بطاقة واحدة'} - السعر: ${prix} د.ت`
   } else if (service === 'nfc-premium') {
     form.pack = quantite === '2' ? 'nfc-premium-2' : 'nfc-premium-1'
     form.message = `طلب بطاقة NFC - الباقة المميزة - ${quantite === '2' ? 'بطاقتين' : 'بطاقة واحدة'} - السعر: ${prix} د.ت`
-  } 
-  // 2. Paramètres pack générique (depuis les pages produits)
-  else if (pack && allPacks.includes(pack)) {
+  } else if (pack && allPacks.includes(pack)) {
     form.pack = pack
-    if (message) {
-      form.message = message
-    }
-  }
-  // 3. Paramètre message seul
-  else if (message) {
+    if (message) form.message = message
+  } else if (message) {
     form.message = message
   }
 
-  // Défiler vers la calculatrice si hash présent
   if (route.hash === '#price-calculator') {
     const el = document.getElementById('price-calculator')
     if (el) setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100)
@@ -361,9 +338,27 @@ const handleSubmit = () => {
     }, 3000)
   }
 
+  // ═══ SAUVEGARDE DANS L'ADMIN ═══
+  saveMessage({
+    name: form.name,
+    email: form.email,
+    phone: form.phone || '',
+    pack: form.pack || '',
+    message: form.message,
+    source: 'contact'
+  })
+
+  saveClient({
+    name: form.name,
+    email: form.email,
+    phone: form.phone || '',
+    services: form.pack || '',
+    notes: form.message || '',
+    source: 'contact'
+  })
+
   console.log('Données du formulaire :', form)
   
-  // Réinitialiser le formulaire
   form.name = ''
   form.email = ''
   form.phone = ''
@@ -375,7 +370,6 @@ const handleSubmit = () => {
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap');
 
-/* ─── Base ─── */
 .contact-page {
   font-family: 'Cairo', sans-serif;
   direction: rtl;
@@ -390,7 +384,6 @@ const handleSubmit = () => {
   padding: 0 24px;
 }
 
-/* ─── Hero ─── */
 .hero {
   position: relative;
   background: linear-gradient(135deg, #0b1120 0%, #1a2744 100%);
@@ -432,7 +425,6 @@ const handleSubmit = () => {
   z-index: 1;
 }
 
-/* ─── Calculator ─── */
 .calculator-section {
   padding: 60px 0 40px;
   background: #f9fafc;
@@ -595,7 +587,6 @@ const handleSubmit = () => {
   box-shadow: 0 8px 28px rgba(248, 177, 1, 0.4);
 }
 
-/* ─── Contact Section ─── */
 .contact-section {
   padding: 60px 0 100px;
   background: #f9fafc;
@@ -607,7 +598,6 @@ const handleSubmit = () => {
   align-items: start;
 }
 
-/* Info Card */
 .info-card {
   background: #fff;
   border-radius: 28px;
@@ -673,7 +663,6 @@ const handleSubmit = () => {
   transform: translateY(-4px);
 }
 
-/* Form Card */
 .form-card {
   background: #fff;
   border-radius: 28px;
@@ -837,24 +826,12 @@ const handleSubmit = () => {
   100% { transform: scale(1); }
 }
 
-/* ─── Responsive ─── */
 @media (max-width: 900px) {
-  .contact-grid {
-    grid-template-columns: 1fr;
-  }
-  .form-row {
-    grid-template-columns: 1fr;
-  }
-  .calc-body {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  .calc-result {
-    min-width: unset;
-  }
-  .calculator-card {
-    padding: 32px 24px;
-  }
+  .contact-grid { grid-template-columns: 1fr; }
+  .form-row { grid-template-columns: 1fr; }
+  .calc-body { flex-direction: column; align-items: stretch; }
+  .calc-result { min-width: unset; }
+  .calculator-card { padding: 32px 24px; }
 }
 @media (max-width: 480px) {
   .hero { padding: 60px 0 50px; }

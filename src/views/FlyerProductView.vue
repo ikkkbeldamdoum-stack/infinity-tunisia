@@ -369,26 +369,6 @@
         </div>
       </div>
     </section>
-
-    <!-- ═══════════════ GABARITS / TEMPLATES ═══════════════ -->
-    <section class="fp-section fp-templates" id="templates">
-      <div class="wrap">
-        <h2>حمّل القالب الجاهز حسب مقاسك</h2>
-        <p class="fp-section-sub">استخدم قوالبنا الجاهزة لتصميم برنامج التصميم المفضل لديك، وتجنّب أخطاء الهامش والقصّ.</p>
-        <div class="fp-templates-grid">
-          <div class="fp-template-card" v-for="f in formats" :key="f.id">
-            <div class="fp-template-preview" :style="{ aspectRatio: f.ratio || '1 / 1.4' }"></div>
-            <span class="fp-template-name">{{ f.label }}</span>
-            <button type="button" class="fp-template-download">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              تحميل القالب
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ═══════════════ COMMENT COMMANDER ═══════════════ -->
     <section class="fp-section fp-how-to-order" id="how-to-order">
       <div class="wrap">
         <h2>كيف تطلب فلايراتك في 4 خطوات؟</h2>

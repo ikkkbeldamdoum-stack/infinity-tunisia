@@ -293,44 +293,7 @@
       </div>
     </section>
 
-    <!-- ═══════════════ CTA ═══════════════ -->
-    <section class="section cta-simple-section">
-      <div class="wrap">
-        <div class="cta-simple">
-          <div class="cta-glow"></div>
-          <div class="cta-glow cta-glow-2"></div>
-          <div class="cta-pattern"></div>
-          <h3>لديك فكرة إعلان مميزة؟</h3>
-          <p>دعنا نحولها إلى تصميم احترافي يلفت الأنظار ويبرز علامتك التجارية.</p>
-
-          <!-- نموذج طلب عرض سعر سريع -->
-          <form class="quick-quote-form" @submit.prevent="submitQuickQuote">
-            <div class="qq-field">
-              <input type="text" v-model="quickQuote.name" placeholder="الاسم الكامل" required />
-            </div>
-            <div class="qq-field">
-              <input type="tel" v-model="quickQuote.phone" placeholder="رقم الهاتف" required />
-            </div>
-            <div class="qq-field">
-              <select v-model="quickQuote.service">
-                <option value="" disabled selected>اختر الخدمة المطلوبة</option>
-                <option v-for="s in services" :key="s.label" :value="s.label">{{ s.label }}</option>
-              </select>
-            </div>
-            <button type="submit" class="btn-hero-gold qq-submit">
-              أرسل الطلب
-              <span class="btn-arrow">←</span>
-            </button>
-          </form>
-          <p class="qq-hint" v-if="quickQuoteSent">تم إرسال طلبك بنجاح، سنتواصل معك قريباً!</p>
-
-          <div class="cta-actions">
-            <RouterLink to="/devis" class="btn-hero-gold">اطلب عرض سعر</RouterLink>
-            <RouterLink to="/contact" class="btn-hero-outline btn-hero-outline-dark">تواصل معنا</RouterLink>
-          </div>
-        </div>
-      </div>
-    </section>
+  
 
     <!-- ═══════════════ FAQ ═══════════════ -->
     <section class="section faq-section">
@@ -359,26 +322,6 @@
       </div>
     </section>
 
-    <!-- ═══════════════ CONTACT INFO ═══════════════ -->
-    <section class="contact-info-section">
-      <div class="wrap contact-info-simple">
-        <h3 class="info-title">تواصل معنا</h3>
-        <div class="info-items">
-          <div class="info-item">
-            <span class="info-icon">📍</span>
-            طريق قابس كلم 1.5 مدنين، قبالة صيدلية كشو
-          </div>
-          <div class="info-item">
-            <span class="info-icon">📞</span>
-            +216 92 105 505
-          </div>
-          <div class="info-item">
-            <span class="info-icon">✉️</span>
-            contact@infinity-agency.com
-          </div>
-        </div>
-      </div>
-    </section>
 
   </div>
 </template>

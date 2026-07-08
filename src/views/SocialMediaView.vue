@@ -1,4 +1,4 @@
-
+<!-- src/views/SocialMediaView.vue -->
 <template>
   <div dir="rtl" class="infinity-site">
 
@@ -52,7 +52,7 @@
               <li>تقرير شهري</li>
               <li>خدمة العملاء واستشارة يومية</li>
             </ul>
-            <RouterLink :to="{ name: 'contact', query: { pack: 'BUSINESS' } }" class="btn-hero-gold full-width">تواصل معنا</RouterLink>
+            <button @click="handleContactClick('BUSINESS')" class="btn-hero-gold full-width">تواصل معنا</button>
           </div>
 
           <!-- Carte PREMIUM -->
@@ -72,7 +72,7 @@
               <li>خدمة العملاء واستشارة يومية</li>
             </ul>
             <div class="popular-tag">الأكثر طلباً</div>
-            <RouterLink :to="{ name: 'contact', query: { pack: 'PREMIUM' } }" class="btn-hero-gold full-width">تواصل معنا</RouterLink>
+            <button @click="handleContactClick('PREMIUM')" class="btn-hero-gold full-width">تواصل معنا</button>
           </div>
 
           <!-- Carte STARTER -->
@@ -90,7 +90,7 @@
               <li>تقرير شهري</li>
               <li>خدمة العملاء واستشارة يومية</li>
             </ul>
-            <RouterLink :to="{ name: 'contact', query: { pack: 'STARTER' } }" class="btn-hero-gold full-width">تواصل معنا</RouterLink>
+            <button @click="handleContactClick('STARTER')" class="btn-hero-gold full-width">تواصل معنا</button>
           </div>
         </div>
       </div>
@@ -210,8 +210,24 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAdminStorage } from '../composables/useAdminStorage'
 
+const router = useRouter()
+const { saveMessage } = useAdminStorage()
 const activeFaq = ref(null)
+
+function handleContactClick(packName) {
+  saveMessage({
+    name: 'Visiteur site',
+    email: '',
+    phone: '',
+    pack: packName,
+    message: `Intéressé par la bague ${packName} - demande de contact depuis la page Social Media`,
+    source: 'social-media'
+  })
+  router.push({ name: 'contact', query: { pack: packName } })
+}
 
 const icons = {
   design: `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>`,
@@ -420,7 +436,6 @@ const faqs = [
 .cta-icon { flex-shrink: 0; }
 .cta-phone-mockup { width: 80px; height: 120px; background: var(--gray-50); border-radius: 16px; border: 2px solid var(--gray-200); display: flex; align-items: center; justify-content: center; font-size: 32px; transform: rotate(6deg); box-shadow: 0 8px 24px rgba(0,0,0,0.05); }
 
-/* ═══ RESPONSIVE ═══ */
 @media (max-width: 1024px) {
   .packs-grid { grid-template-columns: repeat(2, 1fr); }
   .services-6-grid { grid-template-columns: repeat(2, 1fr); }

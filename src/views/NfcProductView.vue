@@ -217,6 +217,7 @@
 <script setup>
 import { ref } from 'vue'
 import CarteNfcPricingModern from '../components/CarteNfcPricingModern.vue'
+import { pushAdminRecord, buildOrderRecord } from '../utils/adminSync'
 
 /* ═══════════════════════════════════════════════════════════
    ICÔNES
@@ -310,6 +311,16 @@ const openFaq = ref(0)
 const quickQuote = ref({ name: '', phone: '', service: '' })
 const quickQuoteSent = ref(false)
 function submitQuickQuote() {
+  // ═══ Envoi du devis rapide vers le panneau admin (onglet "الطلبات") ═══
+  pushAdminRecord('infinity_commandes', buildOrderRecord({
+    product: 'بطاقات NFC الذكية',
+    productKey: 'nfc',
+    contact: { name: quickQuote.value.name, phone: quickQuote.value.phone },
+    details: [
+      { label: 'الخدمة المطلوبة', value: quickQuote.value.service || '' },
+    ],
+  }))
+
   quickQuoteSent.value = true
   quickQuote.value = { name: '', phone: '', service: '' }
   setTimeout(() => { quickQuoteSent.value = false }, 5000)

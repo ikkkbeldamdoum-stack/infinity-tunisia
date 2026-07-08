@@ -91,9 +91,9 @@
             </ul>
             
             <div class="offer-action">
-              <RouterLink :to="'/contact?pack=' + encodeURIComponent(o.packValue)" class="btn-book-now">
-                احجز الآن
-              </RouterLink>
+             <button @click="handleAdClick(o.packValue)" class="btn-book-now">  احجز الآن
+ </button>
+
             </div>
 
           </div>
@@ -206,11 +206,36 @@
   </div>
 </template>
 
+<!-- src/views/SponsoredAdsView.vue -->
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAdminStorage } from '../composables/useAdminStorage'
 
-// ═══ استيراد فيديو الهيرو ═══
-import heroVideo from '../assets/hero-video.mp4?url'
+const router = useRouter()
+const { saveMessage } = useAdminStorage()
+
+function handleAdClick(packValue) {
+  saveMessage({
+    name: 'Visiteur site',
+    email: '',
+    phone: '',
+    pack: packValue,
+    message: `Demande d'information pour la campagne publicitaire : ${packValue}`,
+    source: 'sponsored-ads'
+  })
+  router.push({ name: 'contact', query: { pack: packValue } })
+}
+
+// ═══ Remplacer dans le template ═══
+// <RouterLink :to="'/contact?pack=' + encodeURIComponent(o.packValue)" class="btn-book-now">
+//   احجز الآن
+// </RouterLink>
+// 
+// Par :
+// <button @click="handleAdClick(o.packValue)" class="btn-book-now">
+//   احجز الآن
+// </button>
 
 /* ═══ Hero badges ═══ */
 const heroBadges = [

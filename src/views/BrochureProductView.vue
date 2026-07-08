@@ -451,6 +451,7 @@
 
 <script setup>
 import { ref, reactive, computed } from 'vue'
+import { pushAdminRecord, buildOrderRecord } from '../utils/adminSync'
 
 /* ═══════════════════════════════════════════════════════════
    DONNÉES PRODUIT (contenu original)
@@ -653,7 +654,25 @@ const canOrder = computed(() =>
 
 function submitOrder() {
   if (!canOrder.value) return
-  // TODO: ربط هذا الزر بواجهة API الحقيقية لإرسال الطلب
+
+  // ═══ Envoi de la commande vers le panneau admin (onglet "الطلبات") ═══
+  pushAdminRecord('infinity_commandes', buildOrderRecord({
+    product: 'الكتيبات والبروشورات',
+    productKey: 'brochure',
+    contact,
+    estimatedPrice: estimatedPrice.value,
+    details: [
+      { label: 'التجليد', value: bindings.find((b) => b.id === selection.binding)?.label || '' },
+      { label: 'المقاس', value: formats.find((f) => f.id === selection.format)?.label || '' },
+      { label: 'الورق الداخلي', value: innerPapers.find((p) => p.id === selection.paper)?.label || '' },
+      { label: 'الألوان', value: colors.find((c) => c.id === selection.color)?.label || '' },
+      { label: 'الغلاف', value: covers.find((c) => c.id === selection.cover)?.label || '' },
+      { label: 'عدد الصفحات', value: selection.pages ? `${selection.pages} صفحة` : '' },
+      { label: 'الكمية', value: selection.quantity ? String(selection.quantity) : '' },
+      { label: 'التوصيل المتوقع', value: estimatedDeliveryLabel.value },
+    ],
+  }))
+
   orderSent.value = true
   setTimeout(() => (orderSent.value = false), 5000)
 }

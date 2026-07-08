@@ -86,32 +86,22 @@
                 <label for="service">الخدمة المهتم بها</label>
                 <select id="service" v-model="form.service">
                   <option value="">اختر الخدمة...</option>
-
-                  <!-- Web Development -->
                   <option value="Landing Page">Landing Page</option>
                   <option value="Site Vitrine">Site Vitrine</option>
                   <option value="E-Commerce">E-Commerce</option>
                   <option value="نظام الحجز">نظام الحجز الإلكتروني</option>
                   <option value="صيانة ودعم فني">الصيانة والدعم الفني</option>
-
-                  <!-- Social Media -->
                   <option value="BUSINESS">BUSINESS (شبكات)</option>
                   <option value="PREMIUM">PREMIUM (شبكات)</option>
                   <option value="STARTER">STARTER (شبكات)</option>
-
-                  <!-- Vidéo -->
                   <option value="مونتاج الفيديو">مونتاج الفيديو</option>
                   <option value="تصوير الفيديو">تصوير الفيديو</option>
                   <option value="تصوير + مونتاج">تصوير + مونتاج</option>
                   <option value="فيديو تعريفي">فيديو تعريفي</option>
                   <option value="تغطية الفعاليات (فيديو)">تغطية الفعاليات</option>
-
-                  <!-- Sponsoring -->
                   <option value="7 أيام - 130 DT">إعلانات ممولة (7 أيام)</option>
                   <option value="14 يوم - 250 DT">إعلانات ممولة (14 يوم)</option>
                   <option value="30 يوم - 590 DT">إعلانات ممولة (30 يوم)</option>
-
-                  <!-- Branding -->
                   <option value="تصميم منشور">تصميم منشور</option>
                   <option value="باقة 10 منشورات">باقة 10 منشورات</option>
                   <option value="Flyer">Flyer</option>
@@ -119,8 +109,6 @@
                   <option value="Menu Restaurant">Menu Restaurant</option>
                   <option value="Logo Design">Logo Design</option>
                   <option value="الهوية البصرية">الهوية البصرية</option>
-
-                  <!-- Print & Publicité -->
                   <option value="بطاقات الأعمال">بطاقات الأعمال</option>
                   <option value="المطويات (Flyers)">المطويات (Flyers)</option>
                   <option value="البروشورات">البروشورات</option>
@@ -133,8 +121,6 @@
                   <option value="الملصقات (Stickers)">الملصقات (Stickers)</option>
                   <option value="الكتالوجات">الكتالوجات</option>
                   <option value="البانرات الإعلانية">البانرات الإعلانية</option>
-
-                  <!-- Photographie -->
                   <option value="جلسة تصوير لمدة ساعتين">جلسة تصوير (ساعتين)</option>
                   <option value="جلسة تصوير لمدة 4 ساعات">جلسة تصوير (4 ساعات)</option>
                   <option value="تصوير المنتجات">تصوير المنتجات</option>
@@ -160,6 +146,9 @@
 
 <script setup>
 import { reactive } from 'vue'
+import { useAdminStorage } from '../composables/useAdminStorage'
+
+const { saveRendezVous, saveClient } = useAdminStorage()
 
 const form = reactive({
   firstName: '',
@@ -173,10 +162,30 @@ const form = reactive({
 })
 
 const handleSubmit = () => {
-  // Ici, vous pouvez envoyer les données à votre API ou les traiter
+  // ═══ SAUVEGARDE DANS L'ADMIN ═══
+  saveRendezVous({
+    firstName: form.firstName,
+    lastName: form.lastName || '',
+    email: form.email,
+    phone: form.phone,
+    date: form.date,
+    time: form.time,
+    service: form.service || '',
+    message: form.message || ''
+  })
+
+  saveClient({
+    name: `${form.firstName} ${form.lastName || ''}`.trim(),
+    email: form.email,
+    phone: form.phone,
+    services: form.service || '',
+    notes: form.message || '',
+    source: 'rendez-vous'
+  })
+
   console.log('Données du rendez-vous :', form)
   alert('تم تأكيد موعدك بنجاح! سنتواصل معك قريباً لتأكيد التفاصيل.')
-  // Réinitialisation du formulaire
+  
   form.firstName = ''
   form.lastName = ''
   form.email = ''
@@ -210,7 +219,6 @@ const handleSubmit = () => {
 
 .wrap { max-width: 1240px; margin: 0 auto; padding: 0 24px; }
 
-/* ═══ HERO RENDEZ-VOUS ═══ */
 .rdv-hero {
   position: relative;
   background-image: url('../assets/hero-bg.png');
@@ -252,7 +260,6 @@ const handleSubmit = () => {
   line-height: 1.8;
 }
 
-/* ═══ SECTION RENDEZ-VOUS ═══ */
 .rdv-section {
   padding: 80px 0;
   background: var(--white);
@@ -264,7 +271,6 @@ const handleSubmit = () => {
   align-items: start;
 }
 
-/* ═══ COLONNE INFOS ═══ */
 .info-col {
   background: var(--white);
   border: 1px solid var(--gray-200);
@@ -321,7 +327,6 @@ const handleSubmit = () => {
   padding-bottom: 6px;
 }
 
-/* ═══ COLONNE FORMULAIRE ═══ */
 .form-col {
   background: var(--white);
   border: 1px solid var(--gray-200);
@@ -389,7 +394,6 @@ const handleSubmit = () => {
   box-shadow: 0 8px 30px rgba(248, 177, 1, 0.6);
 }
 
-/* ═══ RESPONSIVE ═══ */
 @media (max-width: 900px) {
   .rdv-grid {
     grid-template-columns: 1fr;

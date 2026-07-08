@@ -141,33 +141,7 @@
     </section>
 
     <!-- ═══════════ ALL SERVICES ═══════════ -->
-    <section class="section all-services-sec">
-      <div class="wrap">
-        <div class="section-head center">
-          <span class="sec-tag">خدماتنا المتكاملة</span>
-          <h2 class="sec-title">خدماتنا</h2>
-          <p class="sec-desc">نقدم مجموعة متكاملة من الخدمات الرقمية والإبداعية تحت سقف واحد</p>
-        </div>
-        <div class="all-services-grid">
-          <RouterLink :to="s.link" class="as-card" v-for="s in allServices" :key="s.title">
-            <div class="as-thumb">
-              <div class="as-thumb-overlay"></div>
-              <div class="as-thumb-inner" :style="{ background: s.gradient }">
-                <span class="as-thumb-icon" v-html="s.icon"></span>
-              </div>
-            </div>
-            <div class="as-body">
-              <span class="as-cat">{{ s.cat }}</span>
-              <h4>{{ s.title }}</h4>
-              <span class="as-link">عرض التفاصيل →</span>
-            </div>
-          </RouterLink>
-        </div>
-        <div class="btn-center">
-          <RouterLink to="/nos-services" class="btn btn-primary">عرض جميع الخدمات</RouterLink>
-        </div>
-      </div>
-    </section>
+    
 
     <!-- ═══════════ PROCESS DARK ═══════════ -->
     <section class="section process-dark-sec">

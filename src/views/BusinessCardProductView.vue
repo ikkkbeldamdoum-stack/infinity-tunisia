@@ -274,7 +274,20 @@
       </div>
     </div>
 
-
+    <!-- ═══════════════ FORMULAIRE DE COMMANDE ═══════════════ -->
+    <div class="wrap" id="order-form">
+      <div class="bc-order-form">
+        <h3>أكمل طلبك</h3>
+        <div class="bc-order-form-grid">
+          <input type="text" v-model="contact.name" placeholder="الاسم الكامل" />
+          <input type="tel" v-model="contact.phone" placeholder="رقم الهاتف" />
+        </div>
+        <button type="button" class="btn-gold bc-order-submit" @click="submitOrder" :disabled="!canOrder">
+          <span v-if="orderSent">✅ تم إرسال طلبك، سنتواصل معك قريباً</span>
+          <span v-else>تأكيد الطلب — {{ formatMoney(estimatedPrice) }} د.ت</span>
+        </button>
+      </div>
+    </div>
 
     <!-- ═══════════════ GUIDE D'ACHAT ═══════════════ -->
     <section class="bc-section bc-guide" id="guide">
@@ -374,23 +387,6 @@
       </div>
     </section>
 
-    <!-- ═══════════════ GABARITS / TEMPLATES ═══════════════ -->
-    <section class="bc-section bc-templates" id="templates">
-      <div class="wrap">
-        <h2>حمّل القالب الجاهز حسب شكل بطاقتك</h2>
-        <p class="bc-section-sub">استخدم قوالبنا الجاهزة لتصميم برنامج التصميم المفضل لديك، وتجنّب أخطاء الهامش والقصّ.</p>
-        <div class="bc-templates-grid">
-          <div class="bc-template-card" v-for="f in formats" :key="f.id">
-            <div class="bc-template-preview" :style="{ aspectRatio: f.ratio || '1.6 / 1' }"></div>
-            <span class="bc-template-name">{{ f.label }}</span>
-            <button type="button" class="bc-template-download">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              تحميل القالب
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
 
     <!-- ═══════════════ COMMENT COMMANDER ═══════════════ -->
     <section class="bc-section bc-how-to-order" id="how-to-order">
@@ -430,6 +426,7 @@
 
 <script setup>
 import { ref, reactive, computed } from 'vue'
+import { pushAdminRecord, buildOrderRecord } from '../utils/adminSync'
 
 /* ═══════════════════════════════════════════════════════════
    DONNÉES PRODUIT (contenu original)
@@ -627,7 +624,24 @@ const canOrder = computed(() =>
 
 function submitOrder() {
   if (!canOrder.value) return
-  // TODO: ربط هذا الزر بواجهة API الحقيقية لإرسال الطلب
+
+  // ═══ Envoi de la commande vers le panneau admin (onglet "الطلبات") ═══
+  pushAdminRecord('infinity_commandes', buildOrderRecord({
+    product: 'بطاقات الأعمال',
+    productKey: 'business-card',
+    contact,
+    estimatedPrice: estimatedPrice.value,
+    details: [
+      { label: 'الشكل', value: formats.find((f) => f.id === selection.format)?.label || '' },
+      { label: 'الورق', value: papers.find((p) => p.id === selection.paper)?.label || '' },
+      { label: 'جهة الطباعة', value: sides.find((s) => s.id === selection.side)?.label || '' },
+      { label: 'الفينيش', value: finishes.find((f) => f.id === selection.finish)?.label || '' },
+      { label: 'الحواف', value: corners.find((c) => c.id === selection.corner)?.label || '' },
+      { label: 'الكمية', value: selection.quantity ? String(selection.quantity) : '' },
+      { label: 'التوصيل المتوقع', value: estimatedDeliveryLabel.value },
+    ],
+  }))
+
   orderSent.value = true
   setTimeout(() => (orderSent.value = false), 5000)
 }

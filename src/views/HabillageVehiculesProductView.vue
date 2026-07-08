@@ -113,7 +113,49 @@
         </div>
       </div>
     </section>
+ <!-- ═══════════════ TARIFS ═══════════════ -->
+    <section class="section pricing-section">
+      <div class="wrap">
+        <div class="section-head center">
+          <span class="sec-tag">الأسعار</span>
+          <h2 class="sec-title">باقات تلبيس السيارات</h2>
+          <p class="sec-desc">أسعار تنافسية مع أفضل خامات الفينيل العالمية</p>
+        </div>
 
+        <div class="pricing-grid">
+          <div class="pricing-card" v-for="plan in pricingPlans" :key="plan.name">
+            <div class="plan-header">
+              <h3>{{ plan.name }}</h3>
+              <p>{{ plan.coverage }}</p>
+            </div>
+            <div class="plan-price">
+              <span class="price-amount">{{ plan.price }}</span>
+              <span class="price-currency">د.ت</span>
+              <span class="price-unit">/ للسيارة</span>
+            </div>
+            <ul class="plan-features">
+              <li v-for="feat in plan.features" :key="feat">
+                <span class="plan-check">✓</span>
+                <span>{{ feat }}</span>
+              </li>
+            </ul>
+            <RouterLink 
+              :to="{ 
+                name: 'contact', 
+                query: { 
+                  pack: 'تلبيس السيارات',
+                  message: `طلب ${plan.name} - ${plan.coverage} - السعر: ${plan.price} د.ت`
+                } 
+              }" 
+              class="btn-hero-gold plan-btn"
+            >
+              اطلب الآن
+              <span class="btn-arrow">←</span>
+            </RouterLink>
+          </div>
+        </div>
+      </div>
+    </section>
     <!-- ═══════════════ TYPES D'HABILLAGE ═══════════════ -->
     <section class="section services-section">
       <div class="wrap">
@@ -169,49 +211,7 @@
       </div>
     </section>
 
-    <!-- ═══════════════ TARIFS ═══════════════ -->
-    <section class="section pricing-section">
-      <div class="wrap">
-        <div class="section-head center">
-          <span class="sec-tag">الأسعار</span>
-          <h2 class="sec-title">باقات تلبيس السيارات</h2>
-          <p class="sec-desc">أسعار تنافسية مع أفضل خامات الفينيل العالمية</p>
-        </div>
-
-        <div class="pricing-grid">
-          <div class="pricing-card" v-for="plan in pricingPlans" :key="plan.name">
-            <div class="plan-header">
-              <h3>{{ plan.name }}</h3>
-              <p>{{ plan.coverage }}</p>
-            </div>
-            <div class="plan-price">
-              <span class="price-amount">{{ plan.price }}</span>
-              <span class="price-currency">د.ت</span>
-              <span class="price-unit">/ للسيارة</span>
-            </div>
-            <ul class="plan-features">
-              <li v-for="feat in plan.features" :key="feat">
-                <span class="plan-check">✓</span>
-                <span>{{ feat }}</span>
-              </li>
-            </ul>
-            <RouterLink 
-              :to="{ 
-                name: 'contact', 
-                query: { 
-                  pack: 'تلبيس السيارات',
-                  message: `طلب ${plan.name} - ${plan.coverage} - السعر: ${plan.price} د.ت`
-                } 
-              }" 
-              class="btn-hero-gold plan-btn"
-            >
-              اطلب الآن
-              <span class="btn-arrow">←</span>
-            </RouterLink>
-          </div>
-        </div>
-      </div>
-    </section>
+   
 
     <!-- ═══════════════ PROCESSUS ═══════════════ -->
     <section class="section process-section">

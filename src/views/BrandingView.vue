@@ -65,8 +65,10 @@
               <li>تصميم منشور واحد</li>
               <li>جودة عالية</li>
               <li>تسليم خلال 24 ساعة</li>
-            </ul>
-            <RouterLink :to="{ name: 'contact', query: { pack: 'تصميم منشور' } }" class="btn-hero-gold full-width">احصل على العرض</RouterLink>
+            <button @click="handleDesignClick('تصميم منشور')" class="btn-hero-gold full-width">احصل على العرض
+</button>
+</ul>
+
           </div>
 
           <!-- 2. Pack 10 منشورات (الأكثر طلباً) -->
@@ -211,7 +213,36 @@
   </div>
 </template>
 
+<!-- src/views/BrandingView.vue -->
 <script setup>
+import { useRouter } from 'vue-router'
+import { useAdminStorage } from '../composables/useAdminStorage'
+
+const router = useRouter()
+const { saveMessage } = useAdminStorage()
+
+function handleDesignClick(packName) {
+  saveMessage({
+    name: 'Visiteur site',
+    email: '',
+    phone: '',
+    pack: packName,
+    message: `Demande d'information pour : ${packName}`,
+    source: 'branding'
+  })
+  router.push({ name: 'contact', query: { pack: packName } })
+}
+
+// ═══ Remplacer tous les RouterLink par des buttons ═══
+// <RouterLink :to="{ name: 'contact', query: { pack: 'تصميم منشور' } }" class="btn-hero-gold full-width">
+//   احصل على العرض
+// </RouterLink>
+// 
+// Par :
+// <button @click="handleDesignClick('تصميم منشور')" class="btn-hero-gold full-width">
+//   احصل على العرض
+// </button>
+
 const features = [
   { 
     label: 'جودة عالية وإبداع بلا حدود', 
